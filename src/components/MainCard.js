@@ -49,8 +49,8 @@ const MainCard = forwardRef(
                     border: '1px solid rgba(0,5,21,0.1)', 
                     //borderColor: theme.palette.mode === 'dark' ? theme.palette.divider : theme.palette.grey.A800,
                     // borderTop: '4px solid #7DE3C0',
-                    bgcolor: '#f1f1f1',
-                    borderRadius: 0,
+                    bgcolor: '#292E3E',
+                    borderRadius: '20px',
                     // boxShadow: boxShadow && (!border || theme.palette.mode === 'dark') ? shadow || theme.customShadows.z1 : 'inherit',
                     // ':hover': {
                     //     boxShadow: boxShadow ? shadow || theme.customShadows.z1 : 'inherit'

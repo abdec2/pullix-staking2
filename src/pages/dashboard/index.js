@@ -49,6 +49,7 @@ import { useAccount, useSigner } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import useAccountData from 'hooks/useAccountData';
 import useGetRewards from 'hooks/useGetRewards';
+import { Card } from '../../../node_modules/@mui/material/index';
 
 // avatar style
 const avatarSX = {
@@ -328,7 +329,7 @@ const DashboardDefault = () => {
 
 
     return (
-        <Grid container rowSpacing={4.5} columnSpacing={3.75} sx={{ paddingTop: '5px' }}>
+        <Grid container rowSpacing={2} columnSpacing={3.75} sx={{ paddingTop: '5px' }}>
             {/* row 1 */}
             <Grid item xs={12} sm={12} md={4} lg={4}>
                 <StakingDetail title="Total Value Locked" count={'$ ' + new Intl.NumberFormat('en-US').format(totalLockedValue)} />
@@ -342,7 +343,15 @@ const DashboardDefault = () => {
 
             {/* row 2 */}
             <Grid item xs={12} >
-                <TimeComponent />
+                <Card 
+                    sx={{
+                        borderRadius: '20px',
+                        p: '1px',
+                        background: 'linear-gradient(104.17deg, #EF9933 0%, rgba(169, 108, 36, 0) 70%, #EF9933 100%)',
+                    }}
+                >
+                    <TimeComponent />
+                </Card>
             </Grid>
            
 

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: '#e5e5e5',
-    borderRadius: 0,
+    backgroundColor: '#040611',
+    borderRadius: 8,
     paddingTop: '1.25rem',
     paddingBottom: '1.25rem',
     textAlign: 'center',
@@ -13,20 +13,26 @@ const Item = styled(Paper)(({ theme }) => ({
     width: '68px'
 }));
 
+const ItemWrapper = styled(Paper)(({ theme }) => ({
+    borderRadius: 8,
+    padding: '1px',
+    background: 'linear-gradient(133deg, #C77515 0%, rgba(217, 133, 34, 0) 18%, rgba(221, 136, 37, 0.8) 29%, rgba(227, 141, 41, 0) 55%, rgba(234, 148, 47, 1) 80%, rgba(237, 151, 49, 0) 92%, #EF9933 100%)',
+    backgroundSize: '50.1% 1000px'
+}));
+
 const styles = {
     lockPeriod: {
         textAlign: 'center',
-        fontFamily: 'Space Grotesk',
         fontWeight: 400,
         fontSize: '16px',
-        lineHeight: '20px'
+        lineHeight: '16px'
     },
     timer: {
-        color: '#F5331E',
-        fontFamily: 'Space Grotesk',
+        color: '#fff',
         fontWeight: 600,
-        fontSize: '32px',
-        lineHeight: '23px'
+        fontSize: '28px',
+        lineHeight: '28px',
+        fontFamily: '"Zen Kaku Gothic Antique", sans-serif !important'
 
     },
     timeCat: {
@@ -117,24 +123,26 @@ const Countdown = ({deadline}) => {
             direction="row"
             divider={<Divider />}
             spacing={1.5}
-            sx={{ mt: '16px' }}
+            sx={{ mt: '22px' }}
             alignItems='center'
         >
-            <Item>
-                <Typography variant="h3" sx={styles.timer} >{days < 10 ? "0" + days : isNaN(days) ? '00' : days}</Typography>
-                <Typography variant="h3" sx={styles.timeCat} >Days</Typography>
-            </Item>
+            <ItemWrapper>
+                <Item>
+                    <Typography variant="h3" sx={styles.timer} >{days < 10 ? "0" + days : isNaN(days) ? '00' : days}</Typography>
+                    {/* <Typography variant="h3" sx={styles.timeCat} >Days</Typography> */}
+                </Item>
+            </ItemWrapper>
             <Item>
                 <Typography variant="h3" sx={styles.timer} >{hours < 10 ? "0" + hours : isNaN(hours) ? '00' : hours}</Typography>
-                <Typography variant="h3" sx={styles.timeCat} >Hours</Typography>
+                {/* <Typography variant="h3" sx={styles.timeCat} >Hours</Typography> */}
             </Item>
             <Item>
                 <Typography variant="h3" sx={styles.timer} >{minutes < 10 ? "0" + minutes : isNaN(minutes) ? '00' : minutes}</Typography>
-                <Typography variant="h3" sx={styles.timeCat} >Minutes</Typography>
+                {/* <Typography variant="h3" sx={styles.timeCat} >Minutes</Typography> */}
             </Item>
             <Item>
                 <Typography variant="h3" sx={styles.timer} >{seconds < 10 ? "0" + seconds : isNaN(seconds) ? '00' : seconds}</Typography>
-                <Typography variant="h3" sx={styles.timeCat} >Seconds</Typography>
+                {/* <Typography variant="h3" sx={styles.timeCat} >Seconds</Typography> */}
             </Item>
         </Stack>
     )

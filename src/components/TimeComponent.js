@@ -16,7 +16,7 @@ const TimeComponent = () => {
     
     console.log(blockchainData)
 
-    let symbol = opt < 5 ? "ORBN" : "USDT"
+    let symbol = "PLX"
     let decimals = opt < 5 ? CONFIG.ORBN_DECIMALS : CONFIG.USDT_DECIMALS
 
     let deadline = new Date().getTime()
@@ -36,14 +36,13 @@ const TimeComponent = () => {
     const styles = {
         lockPeriod: {
             textAlign: 'center',
-            fontFamily: 'Space Grotesk',
             fontWeight: 400,
             fontSize: '16px',
-            lineHeight: '20px'
+            lineHeight: '20px',
+            color: '#fff'
         },
         timer: {
             color: '#F5331E',
-            fontFamily: 'Space Grotesk',
             fontWeight: 600,
             fontSize: '32px',
             lineHeight: '23px'
@@ -57,24 +56,20 @@ const TimeComponent = () => {
         },
         lockAmount: {
             textAlign: 'center',
-            fontFamily: 'Space Grotesk',
             fontWeight: 500,
-            fontSize: '16px',
-            lineHeight: '16px',
-            color: '#000515',
-            opacity: 0.7,
-            mt: 3
+            fontSize: '11px',
+            color: '#fff',
         },
         selectBox: {
-            width: '120px',
-            padding: '6px 10px',
-            fontFamily: 'Space Grotesk',
-            fontSize: '16px',
-            background: '#e6e6e6',
-            border: '1px solid #ccc'
+            width: '128px',
+            padding: '12px 22px',
+            fontSize: '11px',
+            background: 'none',
+            border: '1px solid #EF9933',
+            color: '#fff',
+            borderRadius: '5px'
         },
         stakeChartvalue: {
-            fontFamily: 'Space Grotesk',
             fontSize: '24px',
             fontWeight: 700,
             lineHeight: '30px'
@@ -83,7 +78,6 @@ const TimeComponent = () => {
             border: '1px solid #C7C4C3',
             width: '100%',
             fontSize: '16px',
-            fontFamily: 'Space Grotesk',
             padding: '18px 16px',
             background: '#e5e5e5',
             color: '#000515',
@@ -92,7 +86,6 @@ const TimeComponent = () => {
         btn: {
             width: '100%',
             bgcolor: '#F5331E',
-            fontFamily: 'Space Grotesk',
             fontSize: '16px',
             borderRadius: 0,
             color: "#fff",
@@ -113,35 +106,41 @@ const TimeComponent = () => {
         <MainCard >
             <Box>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Typography variant="h4" >Lock Period</Typography>
+                    <Typography variant="h4" color="#fff" >Lock Period</Typography>
                     <select style={styles.selectBox} onChange={handleChange}>
-                        <optgroup label="ORBN">
-                            <option value="0">1 Month</option>
-                            <option value="1">3 Month</option>
-                            <option value="2">6 Month</option>
-                            <option value="3">9 Month</option>
-                            <option value="4">12 Month</option>
-                        </optgroup>
-
-                        <optgroup label="USDT">
-                            <option value="5">1 Month</option>
-                            <option value="6">3 Month</option>
-                            <option value="7">6 Month</option>
-                            <option value="8">9 Month</option>
-                            <option value="9">12 Month</option>
-                        </optgroup>
-
+                        <option value="0">30 Days</option>
+                        <option value="1">90 Days</option>
+                        <option value="2">180 Days</option>
                     </select>
                 </Stack>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 4.5, pb: 3.5, pl: 1, pr: 1, flexDirection: 'column' }}>
                     <Stack spacing={1}>
-                        <Typography variant="p" sx={styles.lockPeriod}>{daysInWeek[new Date(deadline).getDay()]}</Typography>
                         <Typography variant="p" sx={styles.lockPeriod}>{new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(new Date(deadline))}</Typography>
                     </Stack>
                     {/* Countdown */}
                     <Countdown deadline={deadline} />
-                    <Typography variant="p" sx={styles.lockAmount}>Token Staked: {new Intl.NumberFormat("en-US").format(ethers.utils.formatUnits(stakeAmount,decimals)) + " "+symbol} </Typography>
-                    <Typography variant="p" sx={{...styles.lockAmount, mt:1.5}}>Rewards Earned: {ethers.utils.formatUnits(rewardsEarned, CONFIG.ORBN_DECIMALS)} ORBN</Typography>
+                    <div style={{width: '316px'}}>
+                        <Box 
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                mt: 2.75,
+                                width: '100%',
+                            }}
+                        >
+                            <Typography variant="p"  sx={{...styles.lockAmount, color: '#9CA6B8'}}>Token Staked: &nbsp;  
+                                <Typography variant="p" color="#fff" sx={{fontWeight: 'bold'}}> 
+                                    {new Intl.NumberFormat("en-US").format(ethers.utils.formatUnits(stakeAmount,decimals)) + " "+symbol}
+                                </Typography>
+                            </Typography>
+                            <Typography variant="p" sx={{...styles.lockAmount, color: '#9CA6B8', display: 'flex'}}>Rewards Earned: &nbsp; 
+                                <Typography color="#fff" sx={{fontWeight: 'bold', fontSize: '11px'}}>
+                                    {ethers.utils.formatUnits(rewardsEarned, CONFIG.ORBN_DECIMALS)} PLX
+                                </Typography>
+                            </Typography>
+                        </Box>
+                    </div>
                 </Box>
             </Box>
         </MainCard>

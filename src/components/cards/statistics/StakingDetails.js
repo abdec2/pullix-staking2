@@ -15,7 +15,7 @@ import { RiseOutlined, FallOutlined } from '@ant-design/icons';
 const StakingDetails = ({ color, title, count, percentage, isLoss, extra }) => (
     <MainCard sx={{mt:{xs: 1, sm:0}}}>
         <Stack spacing={0.5}>
-            <Box sx={{display: 'flex', alignItems:'center', background: '#000', minWidth: 'fit-content', maxWidth:'122px', p: 1.5, borderRadius: '9px', marginBottom: '34px' }}>
+            <Box sx={{display: 'flex', alignItems:'center', background: '#000', minWidth: 'fit-content', maxWidth:'122px', p: 1.5, borderRadius: '9px', marginBottom: '30px' }}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.73819 3.51611H0.717102C0.505513 3.51611 0.333984 3.68764 0.333984 3.89923V9.11003C0.333984 9.32162 0.505513 9.49315 0.717102 9.49315H2.73819C2.94978 9.49315 3.12131 9.32162 3.12131 9.11003V3.89923C3.12131 3.68764 2.94978 3.51611 2.73819 3.51611Z" fill="#EF9933"/>
                 <path d="M9.40811 2.49463H7.38702C7.17543 2.49463 7.00391 2.66616 7.00391 2.87775V9.11021C7.00391 9.32179 7.17543 9.49332 7.38702 9.49332H9.40811C9.6197 9.49332 9.79123 9.32179 9.79123 9.11021V2.87775C9.79123 2.66616 9.6197 2.49463 9.40811 2.49463Z" fill="#EF9933"/>
@@ -28,7 +28,7 @@ const StakingDetails = ({ color, title, count, percentage, isLoss, extra }) => (
             </Box>
             <Grid container alignItems="center">
                 <Grid item>
-                    <Typography variant="h4" color="inherit" sx={{color: "#fff", fontWeight: 900, fontSize: '27px',}}>
+                    <Typography variant="h4" color="inherit" sx={{color: "#fff", fontWeight: 900, fontSize: '27px', marginLeft: 4}}>
                         {count}
                     </Typography>
                 </Grid> 
