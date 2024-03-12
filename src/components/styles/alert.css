@@ -1,0 +1,12 @@
+.swal2-styled.swal2-confirm {
+    border-radius: 0;
+    background-color: #F5331E ;
+}
+
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: none;
+}
+
+.swal2-styled {
+    padding: 0.625em 3em;
+}
