@@ -21,7 +21,7 @@ const HeaderContent = () => {
             listStyle: 'none',
             color:'#fff',
             display: 'flex', 
-            '& > li' : {
+            '& li' : {
                 marginLeft: '10px',
                 marginRight: '10px'
             }
