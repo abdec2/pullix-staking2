@@ -49,7 +49,7 @@ const MainLayout = () => {
 
     return (
         <>
-            <Loading loading={blockchainData.loading} />
+            {/* <Loading loading={blockchainData.loading} /> */}
             <Box style={{maxWidth: '1440px', margin: 'auto'}} sx={{ display: 'flex', width: '100%', background: '#0B0C13' }}>
                 {/* <Drawer open={open} handleDrawerToggle={handleDrawerToggle} /> */}
                 <Box component="main" sx={{ p: { xs: 2, sm: 3 } }}>

@@ -36,18 +36,13 @@ export const ConnectBtn = () => {
               if (!connected) {
                 return (
                     <Button sx={{
-                        padding: '8px 22px', 
-                        fontFamily: 'Space Grotesk',
+                        padding: '10px 23px', 
                         fontSize: '14px',
                         boxSizing: 'border-box',
-                        background: 'none',
-                        color: '#000515',
-                        fontWeight: 400,
-                        border: '1px solid #000515',
-                        borderRadius: 0, 
-                        '&:hover' : {
-                            bgcolor: '#C7C8CC80'
-                        }
+                        background: 'linear-gradient(180deg, #FDC482 0%, #EF9933 100%)',
+                        color: '#fff',
+                        fontWeight: 600,
+                        borderRadius: '5px', 
                     }} onClick={openConnectModal} >Connect Wallet</Button>
                   
                 );
@@ -55,37 +50,27 @@ export const ConnectBtn = () => {
               if (chain.unsupported) {
                 return (
                     <Button sx={{
-                        padding: '8px 22px', 
-                        fontFamily: 'Space Grotesk',
-                        fontSize: '14px',
-                        boxSizing: 'border-box',
-                        background: 'red',
-                        color: 'white',
-                        fontWeight: 400,
-                        border: '1px solid white',
-                        borderRadius: 0, 
-                        '&:hover' : {
-                            bgcolor: '#C7C8CC80'
-                        }
-                    }} onClick={openChainModal} >Wrong Network</Button> 
+                      padding: '10px 23px', 
+                      fontSize: '14px',
+                      boxSizing: 'border-box',
+                      background: 'linear-gradient(180deg, #FDC482 0%, #EF9933 100%)',
+                      color: '#fff',
+                      fontWeight: 600,
+                      borderRadius: '5px', 
+                  }} onClick={openChainModal} >Wrong Network</Button> 
                   
                 );
               }
               return (
                 <div style={{ display: 'flex', gap: 12 }}>
                     <Button sx={{
-                        padding: '8px 22px', 
-                        fontFamily: 'Space Grotesk',
+                        padding: '10px 23px', 
                         fontSize: '14px',
                         boxSizing: 'border-box',
-                        background: 'none',
-                        color: '#000515',
-                        fontWeight: 400,
-                        border: '1px solid #000515',
-                        borderRadius: 0, 
-                        '&:hover' : {
-                            bgcolor: '#C7C8CC80'
-                        }
+                        background: 'linear-gradient(180deg, #FDC482 0%, #EF9933 100%)',
+                        color: '#fff',
+                        fontWeight: 600,
+                        borderRadius: '5px', 
                     }} onClick={openAccountModal} >{account.displayName}</Button>
                   
                 </div>

@@ -16,8 +16,8 @@ const Item = styled(Paper)(({ theme }) => ({
 const ItemWrapper = styled(Paper)(({ theme }) => ({
     borderRadius: 8,
     padding: '1px',
-    background: 'linear-gradient(133deg, #C77515 0%, rgba(217, 133, 34, 0) 18%, rgba(221, 136, 37, 0.8) 29%, rgba(227, 141, 41, 0) 55%, rgba(234, 148, 47, 1) 80%, rgba(237, 151, 49, 0) 92%, #EF9933 100%)',
-    backgroundSize: '50.1% 1000px'
+    background: 'linear-gradient(146deg, #C77515 0%, rgba(217, 133, 34, 0) 18%, rgba(221, 136, 37, 0.8) 29%, rgba(227, 141, 41, 0) 55%, rgba(234, 148, 47, 1) 80%, rgba(237, 151, 49, 0) 92%, #EF9933 100%)',
+    backgroundSize: '160% 350px'
 }));
 
 const styles = {
@@ -36,14 +36,16 @@ const styles = {
 
     },
     timeCat: {
-        color: '#000515',
+        color: '#9CA6B8',
         lineHeight: '10px',
-        fontSize: '12px',
-        mt: 2
+        fontSize: '10px',
+        position: 'absolute',
+        mt: 1,
+        width: '68px',
+        textAlign: 'center'
     },
     lockAmount: {
         textAlign: 'center',
-        fontFamily: 'Space Grotesk',
         fontWeight: 500,
         fontSize: '18px',
         lineHeight: '16px',
@@ -54,13 +56,11 @@ const styles = {
     selectBox: {
         width: '120px',
         padding: '6px 10px',
-        fontFamily: 'Space Grotesk',
         fontSize: '16px',
         background: '#e6e6e6',
         border: '1px solid #ccc'
     },
     stakeChartvalue: {
-        fontFamily: 'Space Grotesk',
         fontSize: '24px',
         fontWeight: 700,
         lineHeight: '30px'
@@ -69,7 +69,6 @@ const styles = {
         border: '1px solid #C7C4C3',
         width: '100%',
         fontSize: '16px',
-        fontFamily: 'Space Grotesk',
         padding: '18px 16px',
         background: '#e5e5e5',
         color: '#000515',
@@ -78,7 +77,6 @@ const styles = {
     btn: {
         width: '100%',
         bgcolor: '#F5331E',
-        fontFamily: 'Space Grotesk',
         fontSize: '16px',
         borderRadius: 0,
         color: "#fff",
@@ -90,12 +88,12 @@ const styles = {
     }
 }
 
-const Countdown = ({deadline}) => {
+const Countdown = ({ deadline }) => {
     const [days, setDays] = useState(0);
     const [hours, setHours] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
-    
+
     const getTime = () => {
         const time = (deadline) - (new Date().getTime());
         setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
@@ -106,7 +104,7 @@ const Countdown = ({deadline}) => {
 
     useEffect(() => {
         const time = (deadline) - (new Date().getTime());
-        if(time > 0) {
+        if (time > 0) {
             const interval = setInterval(() => getTime(deadline), 1000);
             return () => clearInterval(interval);
         } else {
@@ -119,32 +117,48 @@ const Countdown = ({deadline}) => {
 
 
     return (
-        <Stack
-            direction="row"
-            divider={<Divider />}
-            spacing={1.5}
-            sx={{ mt: '22px' }}
-            alignItems='center'
-        >
-            <ItemWrapper>
-                <Item>
-                    <Typography variant="h3" sx={styles.timer} >{days < 10 ? "0" + days : isNaN(days) ? '00' : days}</Typography>
-                    {/* <Typography variant="h3" sx={styles.timeCat} >Days</Typography> */}
-                </Item>
-            </ItemWrapper>
-            <Item>
-                <Typography variant="h3" sx={styles.timer} >{hours < 10 ? "0" + hours : isNaN(hours) ? '00' : hours}</Typography>
-                {/* <Typography variant="h3" sx={styles.timeCat} >Hours</Typography> */}
-            </Item>
-            <Item>
-                <Typography variant="h3" sx={styles.timer} >{minutes < 10 ? "0" + minutes : isNaN(minutes) ? '00' : minutes}</Typography>
-                {/* <Typography variant="h3" sx={styles.timeCat} >Minutes</Typography> */}
-            </Item>
-            <Item>
-                <Typography variant="h3" sx={styles.timer} >{seconds < 10 ? "0" + seconds : isNaN(seconds) ? '00' : seconds}</Typography>
-                {/* <Typography variant="h3" sx={styles.timeCat} >Seconds</Typography> */}
-            </Item>
-        </Stack>
+        <>
+            <Stack
+                direction="row"
+                divider={<Divider />}
+                spacing={0.9}
+                sx={{ mt: '22px' }}
+                alignItems='center'
+            >
+                <ItemWrapper>
+                    <Item>
+                        <Typography variant="h3" sx={styles.timer} >{days < 10 ? "0" + days : isNaN(days) ? '00' : days}</Typography>
+                    </Item>
+                    <Typography variant="h3" sx={styles.timeCat} >Days</Typography>
+                </ItemWrapper>
+                <Box sx={styles.timer}> : </Box>
+                <ItemWrapper>
+                    <Item>
+                        <Typography variant="h3" sx={styles.timer} >{hours < 10 ? "0" + hours : isNaN(hours) ? '00' : hours}</Typography>
+                        {/* <Typography variant="h3" sx={styles.timeCat} >Hours</Typography> */}
+                    </Item>
+                    <Typography variant="h3" sx={styles.timeCat} >Hours</Typography>
+                </ItemWrapper>
+                <Box sx={styles.timer}> : </Box>
+                <ItemWrapper>
+                    <Item>
+                        <Typography variant="h3" sx={styles.timer} >{minutes < 10 ? "0" + minutes : isNaN(minutes) ? '00' : minutes}</Typography>
+                        {/* <Typography variant="h3" sx={styles.timeCat} >Minutes</Typography> */}
+                    </Item>
+                    <Typography variant="h3" sx={styles.timeCat} >Minutes</Typography>
+                </ItemWrapper>
+                <Box sx={styles.timer}> : </Box>
+                <ItemWrapper>
+                    <Item>
+                        <Typography variant="h3" sx={styles.timer} >{seconds < 10 ? "0" + seconds : isNaN(seconds) ? '00' : seconds}</Typography>
+                        {/* <Typography variant="h3" sx={styles.timeCat} >Seconds</Typography> */}
+                    </Item>
+                    <Typography variant="h3" sx={styles.timeCat} >Seconds</Typography>
+                </ItemWrapper>
+            </Stack>
+
+           
+        </>
     )
 }
 

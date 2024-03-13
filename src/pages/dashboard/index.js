@@ -106,19 +106,18 @@ const styles = {
         lineHeight: '30px'
     },
     txtInput: {
-        border: '1px solid #C7C4C3',
+        border: '1px solid',
         width: '100%',
-        fontSize: '16px',
-        fontFamily: 'Space Grotesk',
-        padding: '18px 16px',
-        background: '#e5e5e5',
-        color: '#000515',
-        borderRadius: 0
+        fontSize: '11px',
+        padding: '13px 18px',
+        background: 'none',
+        color: '#9CA6B8',
+        borderRadius: '5px',
+        fontWeight: 700
     },
     btn: {
         width: '100%',
         bgcolor: '#F5331E',
-        fontFamily: 'Space Grotesk',
         fontSize: '16px',
         borderRadius: 0,
         color: "#fff",
@@ -130,17 +129,23 @@ const styles = {
     },
     btn1: {
         width: '100%',
-        bgcolor: '#e5e5e5',
-        fontFamily: 'Space Grotesk',
-        fontSize: '16px',
-        borderRadius: 0,
-        border: '1px solid #000515',
-        color: "#000515",
-        py: 1.8,
-        px: 2,
-        '&:hover': {
-            bgcolor: "#C7C8CC"
-        }
+        background: 'linear-gradient(253.57deg, #EF9933 -17.46%, #D7913F 36.74%, #C96D00 99.84%)',
+        fontSize: '14px',
+        borderRadius: '5px',
+        color: "#fff",
+        fontWeight: 700,
+        py: '9px', 
+        px: '35px'
+    },
+    btn2: {
+        width: '100%',
+        background: 'linear-gradient(90deg, #0052B4 0%, #2E8DFF 100%)',
+        fontSize: '14px',
+        borderRadius: '5px',
+        color: "#fff",
+        fontWeight: 700,
+        py: '9px', 
+        px: '35px'
     }
 }
 
@@ -171,8 +176,8 @@ const status = [
 ];
 
 const Token = styled(Paper)(({ theme }) => ({
-    background: "#ffffff",
-    borderRadius: 0,
+    background: "rgba(156,166,184,0.18)",
+    borderRadius: '5px',
     padding: "12px",
     boxShadow: "none",
     width: "100%"
@@ -357,24 +362,35 @@ const DashboardDefault = () => {
 
             {/* row 3 */}
             <Grid item xs={12} md={7} lg={7} >
-                <MainCard >
-                    <Grid container>
-                        <Grid item xs={12} sm={6} sx={{ px: 1, mb: 2, sm: { mb: 0 } }}>
-                            <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }} >Amount to Stake</Typography>
-                            <input ref={txtAmount} style={{ ...styles.txtInput }} placeholder="Amount" />
+                <Card  sx={{
+                    bgcolor: '#292E3E',
+                    borderRadius: '20px',
+                    px: '35px',
+                    py: '20px'
+                }}>
+                    <Grid container spacing={2.25} sx={{pb: '40px'}}>
+                        <Grid item xs={12} sm={6} > 
+                            <Typography variant="h4" color="#fff" sx={{ fontWeight: 600, mb: 4.7, fontSize: '14px' }} >Amount to Stake</Typography>
+                            <input ref={txtAmount} style={{ ...styles.txtInput, borderColor: '#9CA6B8' }} placeholder="Amount" />
                         </Grid>
-                        <Grid item xs={12} sm={6} sx={{ px: 1, mb: 2, sm: { mb: 0 } }}>
-                            <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }} >Lock Options</Typography>
-                            <select style={{ ...styles.txtInput }} ref={selPid}>
+                        <Grid item xs={12} sm={6} >
+                            <Typography variant="h4" color="#fff" sx={{ fontWeight: 600, mb: 4.7, fontSize: '14px' }} >Timeframe</Typography>
+                            <select style={{ ...styles.txtInput, borderColor: '#EF9933' }} ref={selPid}>
                                 <option value="">Select Lock Period</option>
                                 <option value="0">30 Days</option>
                                 <option value="1">90 Days</option>
                                 <option value="2">180 Days</option>
                             </select>
                         </Grid>
+                        <Grid item xs={12} sm={6} >
+                            <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>Stake</Button>
+                        </Grid>
+                        <Grid item xs={12} sm={6} >
+                            <Button sx={{ ...styles.btn2 }} onClick={handleWithdraw}>Unstake</Button>
+                        </Grid>
                     </Grid>
 
-                    <Grid container sx={{mt:1.2}}>
+                    {/* <Grid container sx={{mt:1.2}}>
                         <Grid item xs={12} sm={6} sx={{ px: 1, mb: 0.5 }}>
                             <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>Claim Rewards</Button>
                         </Grid>
@@ -385,45 +401,50 @@ const DashboardDefault = () => {
                             <Button sx={{ ...styles.btn }} onClick={handleStake}>Stake</Button>
                         </Grid>
 
-                    </Grid>
+                    </Grid> */}
 
-                </MainCard>
+                </Card>
             </Grid>
 
             <Grid item xs={12} md={5} lg={5}>
-                <MainCard>
+                <Card  sx={{
+                    bgcolor: '#292E3E',
+                    borderRadius: '20px',
+                    px: '35px',
+                    py: '20px'
+                }}>
                     <Box>
-                        <Typography variant="h4" sx={{ fontWeight: 700, mb: 3.5 }} >Token Rate</Typography>
-                        <Stack direction="column" spacing={2} alignItems="center" justifyContent="space-between">
+                        <Typography variant="h4" color="#fff" sx={{ fontWeight: 700, mb: 2.25, fontSize: '14px' }} >Token Rate</Typography>
+                        <Stack direction="column" spacing={1.13} alignItems="center" justifyContent="space-between">
                             <Token>
-                                <Stack direction="row" alignItems="center" spacing={1.8}>
+                                <Stack direction="row" alignItems="center" spacing={3.5}>
                                     <USDT />
-                                    <Stack spacing={1.5}>
+                                    <Stack spacing={2}>
                                         <Stack direction="row" spacing={1.2} alignItems="center">
-                                            <Typography variant="p" sx={{ fontWeight: 700, fontSize: '16px' }} >USDT</Typography>
+                                            <Typography variant="p" color="#fff" sx={{ fontWeight: 700, fontSize: '10px' }} >USDT</Typography>
                                             <div style={{ width: "1px", height: "10px", background: "#C7C8CC" }}></div>
-                                            <Typography variant="p" sx={{ fontWeight: 400, fontSize: '16px', color: "#000515", opacity: 0.7 }} >Tether USD</Typography>
+                                            <Typography variant="p" color="#9CA6B8" sx={{ fontWeight: 700, fontSize: '10px'}} >Tether USD</Typography>
                                         </Stack>
-                                        <Typography variant="p" sx={{ fontWeight: 700, fontSize: '16px' }} >$ 1.00 USD</Typography>
+                                        <Typography variant="p" color="#fff" sx={{ fontWeight: 900, fontSize: '14px' }} >$ 1.00 USD</Typography>
                                     </Stack>
                                 </Stack>
                             </Token>
                             <Token>
-                                <Stack direction="row" alignItems="center" spacing={1.8}>
+                                <Stack direction="row" alignItems="center" spacing={3.5}>
                                     <ORBN />
-                                    <Stack spacing={1.5}>
+                                    <Stack spacing={2}>
                                         <Stack direction="row" spacing={1.2} alignItems="center">
-                                            <Typography variant="p" sx={{ fontWeight: 700, fontSize: '16px' }} >ORBN</Typography>
+                                            <Typography variant="p" color="#fff" sx={{ fontWeight: 700, fontSize: '10px' }} >PLX</Typography>
                                             <div style={{ width: "1px", height: "10px", background: "#C7C8CC" }}></div>
-                                            <Typography variant="p" sx={{ fontWeight: 400, fontSize: '16px', color: "#000515", opacity: 0.7 }} >Orbeon Protocol</Typography>
+                                            <Typography variant="p" color="#9CA6B8" sx={{ fontWeight: 700, fontSize: '10px' }} >Pullix</Typography>
                                         </Stack>
-                                        <Typography variant="p" sx={{ fontWeight: 700, fontSize: '16px' }} >$ {blockchainData.orbn_usd_price.toFixed(3)} USD</Typography>
+                                        <Typography variant="p" color="#fff"  sx={{ fontWeight: 900, fontSize: '14px' }} >$ {blockchainData.orbn_usd_price.toFixed(3)} USD</Typography>
                                     </Stack>
                                 </Stack>
                             </Token>
                         </Stack>
                     </Box>
-                </MainCard>
+                </Card>
             </Grid>
 
 

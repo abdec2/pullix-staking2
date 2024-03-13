@@ -119,7 +119,7 @@ const TimeComponent = () => {
                     </Stack>
                     {/* Countdown */}
                     <Countdown deadline={deadline} />
-                    <div style={{width: '316px'}}>
+                    <div style={{width: '316px', marginTop: '22px'}}>
                         <Box 
                             sx={{
                                 display: 'flex',
