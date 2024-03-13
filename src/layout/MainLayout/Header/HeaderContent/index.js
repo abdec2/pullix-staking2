@@ -41,7 +41,7 @@ const HeaderContent = () => {
                 <Box
 
                 >
-                    <ul style={styles.menu}>
+                    {/* <ul style={styles.menu}>
                         <li>
                             Market
                         </li>
@@ -57,7 +57,7 @@ const HeaderContent = () => {
                         <li>
                             Company
                         </li>
-                    </ul>
+                    </ul> */}
                 </Box>
                 {/* <Typography variant="h4" sx={{
                     ml: 2

@@ -29,42 +29,8 @@ const useAccountData = () => {
                 ...stakingContract,
                 functionName: 'userInfo',
                 args: [2, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'userInfo',
-                args: [3, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'userInfo',
-                args: [4, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'userInfo',
-                args: [5, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'userInfo',
-                args: [6, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'userInfo',
-                args: [7, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'userInfo',
-                args: [8, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'userInfo',
-                args: [9, address]
             }
+            
         ], 
         enabled: false,
         onSuccess(data) {

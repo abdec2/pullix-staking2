@@ -17,10 +17,7 @@ const orbnContract = {
     address: CONFIG.ORBN_ADDRESS,
     abi: tokenAbi,
 }
-const usdtContract = {
-    address: CONFIG.USDT_ADDRESS,
-    abi: tokenAbi,
-}
+
 const stakingContract = {
     address: CONFIG.STAKING_CONTRACT,
     abi: stakingAbi,
@@ -35,16 +32,9 @@ const initialState = {
         usdt: 0.00
     },
     apy: {
-        0: "100",
-        1: "400",
-        2: "800",
-        3: "1200",
-        4: "1800",
-        5: "100",
-        6: "400",
-        7: "800",
-        8: "1200",
-        9: "1800",
+        0: "1000",
+        1: "2200",
+        2: "4500"
     },
     userStakes: [],
     pools: [],
@@ -68,20 +58,14 @@ export const GlobalProvider = ({ children }) => {
                 ...orbnContract,
                 functionName: 'balanceOf',
                 args: [CONFIG.STAKING_CONTRACT]
-            },
-            {
-                ...usdtContract,
-                functionName: 'balanceOf',
-                args: [CONFIG.STAKING_CONTRACT]
-            },
+            }
 
         ],
         onSuccess(data) {
             updateLockedTokens({
                 orbn: ethers.utils.formatUnits(data[0].toString(), CONFIG.ORBN_DECIMALS),
-                usdt: ethers.utils.formatUnits(data[1].toString(), CONFIG.ORBN_DECIMALS)
             })
-            getTokenPrice()
+            // getTokenPrice()
         },
     })
     const { data: apy, isError: apy_err, isLoading: apy_loading } = useContractReads({
@@ -100,42 +84,7 @@ export const GlobalProvider = ({ children }) => {
                 ...stakingContract,
                 functionName: 'poolInfo',
                 args: [2]
-            },
-            {
-                ...stakingContract,
-                functionName: 'poolInfo',
-                args: [3]
-            },
-            {
-                ...stakingContract,
-                functionName: 'poolInfo',
-                args: [4]
-            },
-            {
-                ...stakingContract,
-                functionName: 'poolInfo',
-                args: [5]
-            },
-            {
-                ...stakingContract,
-                functionName: 'poolInfo',
-                args: [6]
-            },
-            {
-                ...stakingContract,
-                functionName: 'poolInfo',
-                args: [7]
-            },
-            {
-                ...stakingContract,
-                functionName: 'poolInfo',
-                args: [8]
-            },
-            {
-                ...stakingContract,
-                functionName: 'poolInfo',
-                args: [9]
-            },
+            }
         ],
         onSuccess(data) {
             console.log('Success', data)
@@ -165,42 +114,7 @@ export const GlobalProvider = ({ children }) => {
                 ...stakingContract,
                 functionName: 'stakeHoldersLength',
                 args: [2]
-            },
-            {
-                ...stakingContract,
-                functionName: 'stakeHoldersLength',
-                args: [3]
-            },
-            {
-                ...stakingContract,
-                functionName: 'stakeHoldersLength',
-                args: [4]
-            },
-            {
-                ...stakingContract,
-                functionName: 'stakeHoldersLength',
-                args: [5]
-            },
-            {
-                ...stakingContract,
-                functionName: 'stakeHoldersLength',
-                args: [6]
-            },
-            {
-                ...stakingContract,
-                functionName: 'stakeHoldersLength',
-                args: [7]
-            },
-            {
-                ...stakingContract,
-                functionName: 'stakeHoldersLength',
-                args: [8]
-            },
-            {
-                ...stakingContract,
-                functionName: 'stakeHoldersLength',
-                args: [9]
-            },
+            }
         ],
         onSuccess(data) {
             let noOfStakers = 0

@@ -383,7 +383,7 @@ const DashboardDefault = () => {
                             </select>
                         </Grid>
                         <Grid item xs={12} sm={6} >
-                            <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>Stake</Button>
+                            <Button sx={{ ...styles.btn1 }} onClick={handleStake}>Stake</Button>
                         </Grid>
                         <Grid item xs={12} sm={6} >
                             <Button sx={{ ...styles.btn2 }} onClick={handleWithdraw}>Unstake</Button>

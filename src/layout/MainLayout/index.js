@@ -16,6 +16,7 @@ import Breadcrumbs from 'components/@extended/Breadcrumbs';
 import { openDrawer } from 'store/reducers/menu';
 import { GlobalContext } from 'context/GlobalContext';
 import Loading from 'components/loadingModals/Loading';
+import ResponsiveAppBar from './AppBar/index';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -49,11 +50,12 @@ const MainLayout = () => {
 
     return (
         <>
-            {/* <Loading loading={blockchainData.loading} /> */}
+            <Loading loading={blockchainData.loading} />
+            {/* <Drawer open={open} handleDrawerToggle={handleDrawerToggle} /> */}
             <Box style={{maxWidth: '1440px', margin: 'auto'}} sx={{ display: 'flex', width: '100%', background: '#0B0C13' }}>
-                {/* <Drawer open={open} handleDrawerToggle={handleDrawerToggle} /> */}
                 <Box component="main" sx={{ p: { xs: 2, sm: 3 } }}>
-                    <Header open={open} handleDrawerToggle={handleDrawerToggle} />
+                    {/* <Header open={open} handleDrawerToggle={handleDrawerToggle} /> */}
+                    <ResponsiveAppBar />
                     <Toolbar />
                     {/* <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} /> */}
                     <Outlet />

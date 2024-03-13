@@ -22,7 +22,7 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
+import { sepolia } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import '@rainbow-me/rainbowkit/styles.css';
@@ -30,9 +30,9 @@ import '@rainbow-me/rainbowkit/styles.css';
 import './index.css';
 
 const { chains, provider } = configureChains(
-  [mainnet],
+  [sepolia],
   [
-    alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_ID }),
+    // alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_ID }),
     publicProvider()
   ]
 );

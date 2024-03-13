@@ -93,7 +93,7 @@ const ApyCard = ({ color, title, count = 0, percentage, isLoss, extra }) => {
     }
 
     useEffect(()=>{
-        setApyValue(blockchainData.apy[0])
+        setApyValue(blockchainData.apy[2])
     }, [])
 
     return (

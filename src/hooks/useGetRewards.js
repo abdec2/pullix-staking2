@@ -29,41 +29,6 @@ const useGetRewards = () => {
                 ...stakingContract,
                 functionName: 'pendingToken',
                 args: [2, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'pendingToken',
-                args: [3, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'pendingToken',
-                args: [4, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'pendingToken',
-                args: [5, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'pendingToken',
-                args: [6, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'pendingToken',
-                args: [7, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'pendingToken',
-                args: [8, address]
-            },
-            {
-                ...stakingContract,
-                functionName: 'pendingToken',
-                args: [9, address]
             }
         ], 
         enabled: false,
