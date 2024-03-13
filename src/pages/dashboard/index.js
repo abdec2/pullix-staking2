@@ -382,11 +382,14 @@ const DashboardDefault = () => {
                                 <option value="2">180 Days</option>
                             </select>
                         </Grid>
-                        <Grid item xs={12} sm={6} >
+                        <Grid item xs={12} sm={4} >
                             <Button sx={{ ...styles.btn1 }} onClick={handleStake}>Stake</Button>
                         </Grid>
-                        <Grid item xs={12} sm={6} >
+                        <Grid item xs={12} sm={4} >
                             <Button sx={{ ...styles.btn2 }} onClick={handleWithdraw}>Unstake</Button>
+                        </Grid>
+                        <Grid item xs={12} sm={4} sx={{ px: 1, mb: 0.5 }}>
+                            <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>Claim Rewards</Button>
                         </Grid>
                     </Grid>
 

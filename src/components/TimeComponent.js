@@ -5,7 +5,7 @@ import { Box, Stack, Typography, Divider, Paper } from "@mui/material"
 import { GlobalContext } from 'context/GlobalContext';
 import { useAccount } from 'wagmi';
 import Countdown from './Countdown';
-import { ethers } from '../../node_modules/ethers/lib/index';
+import { ethers, BigNumber } from 'ethers';
 import { CONFIG } from 'configs/config';
 
 const TimeComponent = () => {
@@ -27,11 +27,10 @@ const TimeComponent = () => {
     }
     
 
-    let stakeAmount = blockchainData.userStakes.length > 0 ? (parseInt(blockchainData?.userStakes[opt]?.amount.toString())) : 0
+    let stakeAmount = blockchainData.userStakes.length > 0 ? (blockchainData?.userStakes[opt]?.amount) : 0
     stakeAmount = isNaN(stakeAmount) ? 0 : stakeAmount
 
-
-    let rewardsEarned = blockchainData.rewards.length > 0 ? (parseInt(blockchainData?.rewards[opt]?.toString())) : 0
+    let rewardsEarned = blockchainData.rewards.length > 0 ? (blockchainData?.rewards[opt]) : 0
     rewardsEarned = isNaN(rewardsEarned) ? 0 : rewardsEarned
  
     const styles = {
