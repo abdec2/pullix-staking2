@@ -197,7 +197,7 @@ const DashboardDefault = () => {
     const refetchAccountData = useAccountData()
     const refetchRewards = useGetRewards()
 
-    const totalLockedValue = (parseFloat(blockchainData.lockedTokens.orbn) * 0.1125 + (parseFloat(blockchainData.lockedTokens.usdt) * parseFloat(1)))
+    const totalLockedValue = (parseFloat(blockchainData.lockedTokens.orbn) * 0.1125 )
 
     const handleRewards = async () => {
         if (!isConnected) {

@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at Etherscan.io on 2024-03-13
+*/
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -1335,18 +1339,10 @@ contract MasterChef is Ownable, ReentrancyGuard {
         return stakeHolders[_pid].length;
     }
 
-    function initializePools(IERC20 _lptoken1, IERC20 _lptoken2) external onlyOwner {
-        add(_lptoken1, 86400*30, 100, true);
-        add(_lptoken1, 86400*30*3, 400, true);
-        add(_lptoken1, 86400*30*6, 800, true);
-        add(_lptoken1, 86400*30*9, 1200, true);
-        add(_lptoken1, 86400*30*12, 1800, true);
-
-        add(_lptoken2, 86400*30, 100, true);
-        add(_lptoken2, 86400*30*3, 400, true);
-        add(_lptoken2, 86400*30*6, 800, true);
-        add(_lptoken2, 86400*30*9, 1200, true);
-        add(_lptoken2, 86400*30*12, 1800, true);
+    function initializePools(IERC20 _lptoken1) external onlyOwner {
+        add(_lptoken1, 86400*30, 1000, true);
+        add(_lptoken1, 86400*30*3, 2200, true);
+        add(_lptoken1, 86400*30*6, 4500, true);
         
     }
 
@@ -1445,7 +1441,8 @@ contract MasterChef is Ownable, ReentrancyGuard {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
         require(user.amount >= _amount, "withdraw: not good");
-        require(block.timestamp >= user.timestamp.add(pool.duration), "Stake period is not expired..");
+        // require(block.timestamp >= user.timestamp.add(pool.duration), "Stake period is not expired.."); // production
+        require(block.timestamp >= user.timestamp.add(5 minutes), "Stake period is not expired.."); // testing
         updatePool(_pid);
         LockupPendingToken(_pid);
         if (_amount > 0) {
@@ -1480,6 +1477,8 @@ contract MasterChef is Ownable, ReentrancyGuard {
         updatePool(_pid);
         LockupPendingToken(_pid);
 
+        require(block.timestamp >= user.timestamp.add(pool.duration).add(60 days), "Rewards release not allowed..");
+
         uint256 pending = user.amount.mul(pool.accTokenPerShare).div(1e18).sub(user.rewardDebt);
 
         if (pending > 0 || user.rewardLockedUp > 0) {
@@ -1497,7 +1496,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
     }
 
     function exit(uint256 _pid, uint256 _amount) external {
-        getRewards(_pid);
+        // getRewards(_pid);
         withdraw(_pid, _amount);
     }
 

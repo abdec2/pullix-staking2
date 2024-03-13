@@ -101,7 +101,7 @@ const ApyCard = ({ color, title, count = 0, percentage, isLoss, extra }) => {
             <Stack spacing={0.5}>
                 <Box sx={{display: 'flex', alignItems:'center', background: '#000', width: '100%', maxWidth:'84px', py: 1.5, px: 1 , borderRadius: '9px', marginBottom: '30px' }}>
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_1_139)">
+                    <g clipPath="url(#clip0_1_139)">
                     <path d="M5.49998 6.41665L4.58331 5.49998L5.49998 4.58331L6.41665 5.49998L5.49998 6.41665ZM4.52602 3.72394L3.38019 2.5781L5.49998 0.458313L7.61977 2.5781L6.47394 3.72394L5.49998 2.74998L4.52602 3.72394ZM2.5781 7.61977L0.458313 5.49998L2.5781 3.38019L3.72394 4.52602L2.74998 5.49998L3.72394 6.47394L2.5781 7.61977ZM8.42186 7.61977L7.27602 6.47394L8.24998 5.49998L7.27602 4.52602L8.42186 3.38019L10.5416 5.49998L8.42186 7.61977ZM5.49998 10.5416L3.38019 8.42186L4.52602 7.27602L5.49998 8.24998L6.47394 7.27602L7.61977 8.42186L5.49998 10.5416Z" fill="#EF9933"/>
                     </g>
                     <defs>

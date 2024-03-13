@@ -28,12 +28,10 @@ import { publicProvider } from 'wagmi/providers/public';
 import '@rainbow-me/rainbowkit/styles.css';
 
 import './index.css';
-
 const { chains, provider } = configureChains(
   [sepolia],
   [
-    // alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_ID }),
-    publicProvider()
+    publicProvider(),
   ]
 );
 

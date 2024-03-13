@@ -31,7 +31,7 @@ const TimeComponent = () => {
     stakeAmount = isNaN(stakeAmount) ? 0 : stakeAmount
 
 
-    let rewardsEarned = blockchainData.rewards.length > 0 ? (parseInt(blockchainData?.rewards[opt].toString())) : 0
+    let rewardsEarned = blockchainData.rewards.length > 0 ? (parseInt(blockchainData?.rewards[opt]?.toString())) : 0
     rewardsEarned = isNaN(rewardsEarned) ? 0 : rewardsEarned
  
     const styles = {
@@ -137,7 +137,7 @@ const TimeComponent = () => {
                             </Typography>
                             <Typography variant="p" sx={{...styles.lockAmount, color: '#9CA6B8', display: 'flex'}}>Rewards Earned: &nbsp; 
                                 <Typography color="#fff" sx={{fontWeight: 'bold', fontSize: '11px'}}>
-                                    {parseFloat(ethers.utils.formatUnits(rewardsEarned, decimals)).toFixed(5)} PLX
+                                    {parseFloat(ethers.utils.formatUnits(rewardsEarned.toString(), decimals)).toFixed(5)} PLX
                                 </Typography>
                             </Typography>
                         </Box>
