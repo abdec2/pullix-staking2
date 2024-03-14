@@ -119,7 +119,7 @@ const ApyCard = ({ color, title, count = 0, percentage, isLoss, extra }) => {
                     <Grid item sx={{ width: '100%' }}>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" >
                             <Typography variant="h4" color="inherit" sx={{color: "#fff", fontWeight: 900, fontSize: '27px', marginLeft: 4}}>
-                                {parseFloat(apyValue/100).toFixed(2)+'%'}
+                            {parseFloat(blockchainData.apy[0]/100)+'%'} to {parseFloat(apyValue/100)+'%'}
                             </Typography>
                             
                         </Stack>

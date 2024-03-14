@@ -15,3 +15,13 @@ select option {
     background-color: #292E3E;
     color: #fff;
 }
+
+.swal2-container.swal2-center>.swal2-popup {
+    background-color: #292E3E;
+    color: #fff;
+    font-family: "Lato", sans-serif !important;
+}
+
+.swal2-styled.swal2-confirm {
+    background: linear-gradient(253.57deg, #EF9933 -17.46%, #D7913F 36.74%, #C96D00 99.84%) !important;
+}

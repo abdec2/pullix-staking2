@@ -337,7 +337,7 @@ const DashboardDefault = () => {
         <Grid container rowSpacing={2} columnSpacing={3.75} sx={{ paddingTop: '5px' }}>
             {/* row 1 */}
             <Grid item xs={12} sm={12} md={4} lg={4}>
-                <StakingDetail title="Total Value Locked" count={'$ ' + new Intl.NumberFormat('en-US').format(totalLockedValue)} />
+                <StakingDetail title="Total Value Locked" count={ new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(totalLockedValue)} />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
                 <ApyCard title="APY Rate" />
