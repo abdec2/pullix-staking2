@@ -47,12 +47,13 @@ const styles = {
         mt: 3
     },
     selectBox: {
-        width: '120px',
-        padding: '6px 10px',
-        fontFamily: 'Space Grotesk',
-        fontSize: '16px',
-        background: '#e6e6e6',
-        border: '1px solid #ccc'
+        width: '128px',
+        padding: '12px 22px',
+        fontSize: '11px',
+        background: 'none',
+        border: '1px solid #EF9933',
+        color: '#fff',
+        borderRadius: '5px'
     },
     stakeChartvalue: {
         fontFamily: 'Space Grotesk',
@@ -93,7 +94,7 @@ const ApyCard = ({ color, title, count = 0, percentage, isLoss, extra }) => {
     }
 
     useEffect(()=>{
-        setApyValue(blockchainData.apy[2])
+        setApyValue(blockchainData.apy[0])
     }, [])
 
     return (
@@ -119,9 +120,13 @@ const ApyCard = ({ color, title, count = 0, percentage, isLoss, extra }) => {
                     <Grid item sx={{ width: '100%' }}>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" >
                             <Typography variant="h4" color="inherit" sx={{color: "#fff", fontWeight: 900, fontSize: '27px', marginLeft: 4}}>
-                            {parseFloat(blockchainData.apy[0]/100)+'%'} to {parseFloat(apyValue/100)+'%'}
+                            {parseFloat(apyValue/100)+'%'}
                             </Typography>
-                            
+                            <select style={styles.selectBox} onChange={handleChange}>
+                                <option value="0">30 Days</option>
+                                <option value="1">90 Days</option>
+                                <option value="2">180 Days</option>
+                            </select>
                         </Stack>
                     </Grid>
 
