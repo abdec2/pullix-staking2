@@ -136,7 +136,6 @@ const styles = {
         color: "#fff",
         fontWeight: 700,
         py: '9px', 
-        px: '30px'
     },
     btn2: {
         width: '100%',
@@ -381,7 +380,7 @@ const DashboardDefault = () => {
                         <Grid item xs={12} sm={4} >
                             <Button sx={{ ...styles.btn2 }} onClick={handleWithdraw}>Unstake</Button>
                         </Grid>
-                        <Grid item xs={12} sm={4} sx={{ px: 1, mb: 0.5 }}>
+                        <Grid item xs={12} sm={4} >
                             <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>get Rewards</Button>
                         </Grid>
                     </Grid>
@@ -390,12 +389,20 @@ const DashboardDefault = () => {
 
             <Grid item xs={12} md={6} lg={6}>
                 <Card  sx={{
-                    bgcolor: '#292E3E',
-                    borderRadius: '20px',
-                    px: '35px',
-                    py: '20px'
-                }}>
-                    <Box>
+                    bgcolor: '#161A28',
+                    borderRadius: '0px',
+                    px: '26px',
+                    py: '18px'
+                }}> 
+                    <Grid container spacing={2.25} >
+                        <Grid item xs={12} > 
+                            <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:1.75, fontSize: '11px', borderBottom: '1px solid #9CA6B8' }} >Token Rate</Typography>
+                            
+                        </Grid>
+                        
+                    </Grid>
+
+                    {/* <Box>
                         <Typography variant="h4" color="#fff" sx={{ fontWeight: 700, mb: 2.25, fontSize: '14px' }} >Token Rate</Typography>
                         <Stack direction="column" spacing={1.13} alignItems="center" justifyContent="space-between">
                             <Token>
@@ -425,7 +432,7 @@ const DashboardDefault = () => {
                                 </Stack>
                             </Token>
                         </Stack>
-                    </Box>
+                    </Box> */}
                 </Card>
             </Grid>
 
