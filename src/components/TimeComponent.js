@@ -7,6 +7,8 @@ import { useAccount } from 'wagmi';
 import Countdown from './Countdown';
 import { ethers, BigNumber } from 'ethers';
 import { CONFIG } from 'configs/config';
+import { LockIcon, LogoSmall } from './icons/index';
+import { Grid } from '../../node_modules/@mui/material/index';
 
 const TimeComponent = () => {
     const { address, isConnected } = useAccount()
@@ -35,11 +37,11 @@ const TimeComponent = () => {
  
     const styles = {
         lockPeriod: {
-            textAlign: 'center',
-            fontWeight: 400,
-            fontSize: '16px',
-            lineHeight: '20px',
-            color: '#fff'
+            textAlign: 'left',
+            fontWeight: 800,
+            fontSize: '11px',
+            lineHeight: '12px',
+            color: '#9CA6B8'
         },
         timer: {
             color: '#F5331E',
@@ -61,12 +63,12 @@ const TimeComponent = () => {
             color: '#fff',
         },
         selectBox: {
-            width: '128px',
-            padding: '12px 22px',
+            width: '90px',
+            padding: '8px 12px',
             fontSize: '11px',
-            background: 'none',
-            border: '1px solid #EF9933',
-            color: '#fff',
+            background: '#161A28',
+            border: "0.2px solid #EBEBEB",
+            color: '#9D9D9D',
             borderRadius: '5px'
         },
         stakeChartvalue: {
@@ -103,29 +105,30 @@ const TimeComponent = () => {
 
 
     return (
-        <MainCard >
+        <MainCard sx={{px: 3, py: 2}} contentSX={{p:0}}>
             <Box>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Typography variant="h4" color="#fff" >Lock Period</Typography>
+                <Stack direction="row" alignItems="center" >
+                    <LockIcon />
+                    <Typography variant="h4" color="#9CA6B8" sx={{fontSize: '11px', fontWeight:'700', ml:1, mr:2, pr:2, borderRight: '1px solid #535A66'}} >Lock Period</Typography>
                     <select style={styles.selectBox} onChange={handleChange}>
                         <option value="0">30 Days</option>
                         <option value="1">90 Days</option>
                         <option value="2">180 Days</option>
                     </select>
                 </Stack>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 4.5, pb: 3.5, pl: 1, pr: 1, flexDirection: 'column' }}>
-                    <Stack spacing={1}>
-                        <Typography variant="p" sx={styles.lockPeriod}>{new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(new Date(deadline))}</Typography>
-                    </Stack>
-                    {/* Countdown */}
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pb: 3, pl: 1, pr: 1, flexDirection: 'column', width: '100%', borderBottom: '1px solid #9CA6B8', mt: { xs:2, sm:1, md:0 } }}>
                     <Countdown deadline={deadline} />
-                    <div style={{width: '316px', marginTop: '22px'}}>
+                    
+                </Box>
+                <Grid container >
+                    <Grid item xs={0} sm={4}></Grid>
+                    <Grid item xs={12} sm={4}>
                         <Box 
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
-                                mt: 2.75,
+                                mt: 2,
                                 width: '100%',
                             }}
                         >
@@ -140,8 +143,13 @@ const TimeComponent = () => {
                                 </Typography>
                             </Typography>
                         </Box>
-                    </div>
-                </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={4} >
+                        <Box sx={{mt:1.65, float:'right' }}>
+                            <LogoSmall />
+                        </Box>
+                    </Grid>
+                </Grid>
             </Box>
         </MainCard>
     )

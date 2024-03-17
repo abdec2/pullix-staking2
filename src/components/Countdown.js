@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: '#040611',
-    borderRadius: 8,
-    paddingTop: '1.25rem',
-    paddingBottom: '1.25rem',
+    backgroundColor: '#1F2237',
+    borderRadius: 0,
+    padding: '10px',
     textAlign: 'center',
     boxShadow: 'none',
-    width: '68px'
+    
 }));
 
 const ItemWrapper = styled(Paper)(({ theme }) => ({
@@ -22,17 +21,17 @@ const ItemWrapper = styled(Paper)(({ theme }) => ({
 
 const styles = {
     lockPeriod: {
-        textAlign: 'center',
-        fontWeight: 400,
-        fontSize: '16px',
-        lineHeight: '16px'
+        textAlign: 'left',
+        fontWeight: 800,
+        fontSize: '11px',
+        lineHeight: '12px',
+        color: '#9CA6B8'
     },
     timer: {
-        color: '#fff',
-        fontWeight: 600,
+        color: '#EF9933',
+        fontWeight: 800,
         fontSize: '28px',
         lineHeight: '28px',
-        fontFamily: '"Zen Kaku Gothic Antique", sans-serif !important'
 
     },
     timeCat: {
@@ -117,7 +116,11 @@ const Countdown = ({ deadline }) => {
 
 
     return (
-        <>
+        <Box> 
+            <Stack >
+                <Typography variant="p" sx={styles.lockPeriod}>{new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(new Date(deadline))}</Typography>
+            </Stack>
+
             <Stack
                 direction="row"
                 divider={<Divider />}
@@ -125,40 +128,29 @@ const Countdown = ({ deadline }) => {
                 sx={{ mt: '22px' }}
                 alignItems='center'
             >
-                <ItemWrapper>
                     <Item>
                         <Typography variant="h3" sx={styles.timer} >{days < 10 ? "0" + days : isNaN(days) ? '00' : days}</Typography>
                     </Item>
-                    <Typography variant="h3" sx={styles.timeCat} >Days</Typography>
-                </ItemWrapper>
                 <Box sx={styles.timer}> : </Box>
-                <ItemWrapper>
                     <Item>
                         <Typography variant="h3" sx={styles.timer} >{hours < 10 ? "0" + hours : isNaN(hours) ? '00' : hours}</Typography>
                         {/* <Typography variant="h3" sx={styles.timeCat} >Hours</Typography> */}
                     </Item>
-                    <Typography variant="h3" sx={styles.timeCat} >Hours</Typography>
-                </ItemWrapper>
                 <Box sx={styles.timer}> : </Box>
-                <ItemWrapper>
                     <Item>
                         <Typography variant="h3" sx={styles.timer} >{minutes < 10 ? "0" + minutes : isNaN(minutes) ? '00' : minutes}</Typography>
                         {/* <Typography variant="h3" sx={styles.timeCat} >Minutes</Typography> */}
                     </Item>
-                    <Typography variant="h3" sx={styles.timeCat} >Minutes</Typography>
-                </ItemWrapper>
                 <Box sx={styles.timer}> : </Box>
-                <ItemWrapper>
                     <Item>
                         <Typography variant="h3" sx={styles.timer} >{seconds < 10 ? "0" + seconds : isNaN(seconds) ? '00' : seconds}</Typography>
                         {/* <Typography variant="h3" sx={styles.timeCat} >Seconds</Typography> */}
                     </Item>
-                    <Typography variant="h3" sx={styles.timeCat} >Seconds</Typography>
-                </ItemWrapper>
             </Stack>
+        </Box>
+            
 
            
-        </>
     )
 }
 

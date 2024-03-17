@@ -12,8 +12,8 @@ body {
 }
 
 select option {
-    background-color: #292E3E;
-    color: #fff;
+    background-color: #161A28;
+    color: #9D9D9D;
 }
 
 .swal2-container.swal2-center>.swal2-popup {

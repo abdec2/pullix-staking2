@@ -50,6 +50,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import useAccountData from 'hooks/useAccountData';
 import useGetRewards from 'hooks/useGetRewards';
 import { Card } from '../../../node_modules/@mui/material/index';
+import { StakersIcon, TvlIcon } from 'components/icons/index';
 
 // avatar style
 const avatarSX = {
@@ -135,7 +136,7 @@ const styles = {
         color: "#fff",
         fontWeight: 700,
         py: '9px', 
-        px: '35px'
+        px: '30px'
     },
     btn2: {
         width: '100%',
@@ -334,16 +335,16 @@ const DashboardDefault = () => {
 
 
     return (
-        <Grid container rowSpacing={2} columnSpacing={3.75} sx={{ paddingTop: '5px' }}>
+        <Grid container rowSpacing={2} columnSpacing={2} sx={{ paddingTop: '5px' }}>
             {/* row 1 */}
             <Grid item xs={12} sm={12} md={4} lg={4}>
-                <StakingDetail title="Total Value Locked" count={ new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(totalLockedValue)} />
+                <StakingDetail title="Total Value Locked" count={ new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(totalLockedValue)} ><TvlIcon /></StakingDetail>
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
                 <ApyCard title="APY Rate" />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
-                <StakingDetail title="Stakers" count={new Intl.NumberFormat('en-US').format(blockchainData.stakers.toString())} />
+                <StakingDetail title="Stakers" count={new Intl.NumberFormat('en-US').format(blockchainData.stakers.toString())} ><StakersIcon /></StakingDetail>
             </Grid>
 
             {/* row 2 */}
@@ -353,20 +354,20 @@ const DashboardDefault = () => {
            
 
             {/* row 3 */}
-            <Grid item xs={12} md={7} lg={7} >
+            <Grid item xs={12} md={6} lg={6} >
                 <Card  sx={{
-                    bgcolor: '#292E3E',
-                    borderRadius: '20px',
-                    px: '35px',
-                    py: '20px'
+                    bgcolor: '#161A28',
+                    borderRadius: '0px',
+                    px: '26px',
+                    py: '18px'
                 }}>
-                    <Grid container spacing={2.25} sx={{pb: '40px'}}>
-                        <Grid item xs={12} sm={6} > 
-                            <Typography variant="h4" color="#fff" sx={{ fontWeight: 600, mb: 4.7, fontSize: '14px' }} >Amount to Stake</Typography>
+                    <Grid container spacing={2.25} >
+                        <Grid item xs={12} sm={8} > 
+                            <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:1.75, fontSize: '11px', borderBottom: '1px solid #9CA6B8' }} >Amount to Stake</Typography>
                             <input ref={txtAmount} style={{ ...styles.txtInput, borderColor: '#9CA6B8' }} placeholder="Amount" />
                         </Grid>
-                        <Grid item xs={12} sm={6} >
-                            <Typography variant="h4" color="#fff" sx={{ fontWeight: 600, mb: 4.7, fontSize: '14px' }} >Timeframe</Typography>
+                        <Grid item xs={12} sm={4} >
+                            <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:1.75, fontSize: '11px', borderBottom: '1px solid #9CA6B8' }} >Timeframe</Typography>
                             <select style={{ ...styles.txtInput, borderColor: '#EF9933' }} ref={selPid}>
                                 <option value="">Select Lock Period</option>
                                 <option value="0">30 Days</option>
@@ -381,27 +382,13 @@ const DashboardDefault = () => {
                             <Button sx={{ ...styles.btn2 }} onClick={handleWithdraw}>Unstake</Button>
                         </Grid>
                         <Grid item xs={12} sm={4} sx={{ px: 1, mb: 0.5 }}>
-                            <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>Claim Rewards</Button>
+                            <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>get Rewards</Button>
                         </Grid>
                     </Grid>
-
-                    {/* <Grid container sx={{mt:1.2}}>
-                        <Grid item xs={12} sm={6} sx={{ px: 1, mb: 0.5 }}>
-                            <Button sx={{ ...styles.btn1 }} onClick={handleRewards}>Claim Rewards</Button>
-                        </Grid>
-                        <Grid item xs={12} sm={6} sx={{ px: 1, mb: 0.5 }}>
-                            <Button sx={{ ...styles.btn1 }} onClick={handleWithdraw}>Withdraw Stake</Button>
-                        </Grid>
-                        <Grid item xs={12} sm={12} sx={{ px: 1, mb: 0.4, mt:2.1 }}>
-                            <Button sx={{ ...styles.btn }} onClick={handleStake}>Stake</Button>
-                        </Grid>
-
-                    </Grid> */}
-
                 </Card>
             </Grid>
 
-            <Grid item xs={12} md={5} lg={5}>
+            <Grid item xs={12} md={6} lg={6}>
                 <Card  sx={{
                     bgcolor: '#292E3E',
                     borderRadius: '20px',

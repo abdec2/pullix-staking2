@@ -64,16 +64,15 @@ const NavItem = ({ item, level }) => {
                 py: !drawerOpen && level === 1 ? 1.25 : 1,
                 ...(drawerOpen && {
                     '&:hover': {
-                        bgcolor: '#292E3E'
+                        background: 'linear-gradient(90deg, #06070A 0%, #434E70 100%);'
                     },
                     '&.Mui-selected': {
-                        bgcolor: '#292E3E',
-                        borderRight: `4px solid #EF9933`,
+                        background: 'linear-gradient(90deg, #06070A 0%, #434E70 100%);',
                         color: iconSelectedColor,
                         
                         '&:hover': {
                             color: iconSelectedColor,
-                            bgcolor: '#292E3E'
+                            background: 'linear-gradient(90deg, #06070A 0%, #434E70 100%);',
                         }
                     }
                 }),

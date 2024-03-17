@@ -51,7 +51,7 @@ const MainLayout = () => {
     return (
         <>
             <Loading loading={blockchainData.loading} />
-            <Box sx={{ display: 'flex', width: '100%' }} style={{background: 'url(/assets/bg.png)', backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+            <Box sx={{ display: 'flex', width: '100%' }} style={{background: 'url(/assets/bg.png)', backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', minHeight: '100vh'}}>
                 <Drawer open={open} handleDrawerToggle={handleDrawerToggle} />
                 <Box component="main" style={{maxWidth: '1147px'}} sx={{ mx:'auto', width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
                     <Header open={open} handleDrawerToggle={handleDrawerToggle} />

@@ -38,7 +38,7 @@ const MainCard = forwardRef(
                
 
                 {/* card content */}
-                {content && <CardContent sx={{px: '20px', py: '24px!important'}}>{children}</CardContent>}
+                {content && <CardContent sx={{px: '26px', py: '18px!important'}}>{children}</CardContent>}
                
 
                 
