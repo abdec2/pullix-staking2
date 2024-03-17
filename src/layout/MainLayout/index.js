@@ -51,12 +51,11 @@ const MainLayout = () => {
     return (
         <>
             <Loading loading={blockchainData.loading} />
-            {/* <Drawer open={open} handleDrawerToggle={handleDrawerToggle} /> */}
-            <Box style={{maxWidth: '1440px', margin: 'auto'}} sx={{ display: 'flex', width: '100%', background: '#0B0C13' }}>
-                <Box component="main" sx={{ p: { xs: 2, sm: 3 } }}>
-                    {/* <Header open={open} handleDrawerToggle={handleDrawerToggle} /> */}
-                    <ResponsiveAppBar />
-                    <Toolbar />
+            <Box sx={{ display: 'flex', width: '100%' }} style={{background: 'url(/assets/bg.png)', backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+                <Drawer open={open} handleDrawerToggle={handleDrawerToggle} />
+                <Box component="main" style={{maxWidth: '1147px'}} sx={{ mx:'auto', width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+                    <Header open={open} handleDrawerToggle={handleDrawerToggle} />
+                    {/* <Toolbar /> */}
                     {/* <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} /> */}
                     <Outlet />
                 </Box>

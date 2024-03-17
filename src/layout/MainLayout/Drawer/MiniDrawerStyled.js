@@ -11,10 +11,11 @@ const openedMixin = (theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
     }),
-    background: '#0B0C13',
+    background: 'rgba(0,0,0,0.5)',
     overflowX: 'hidden',
     boxShadow: 'none',
-    borderRight: 'none',
+    border: '1px solid',
+    borderImageSource: 'radial-gradient(52.17% 45.97% at 100% 49.37%, #EF9933 0%, rgba(137, 88, 29, 0) 100%)'
 });
 
 const closedMixin = (theme) => ({

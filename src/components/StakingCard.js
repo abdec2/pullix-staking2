@@ -31,9 +31,8 @@ const MainCard = forwardRef(
                 elevation={elevation || 0}
                 sx={{
                     ...sx,
-                    bgcolor: '#292E3E',
-                    borderRadius: '20px'
-                   
+                    bgcolor: 'rgba(17, 21, 32, 1)',
+                    borderRadius: '0px'
                 }}
             >
                

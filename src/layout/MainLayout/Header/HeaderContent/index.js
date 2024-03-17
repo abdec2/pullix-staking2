@@ -38,31 +38,10 @@ const HeaderContent = () => {
                     
                 }}
             >
-                <Box
-
-                >
-                    {/* <ul style={styles.menu}>
-                        <li>
-                            Market
-                        </li>
-                        <li>
-                            Platform
-                        </li>
-                        <li>
-                            Promotions
-                        </li>
-                        <li>
-                            PLX Token
-                        </li>
-                        <li>
-                            Company
-                        </li>
-                    </ul> */}
+                <Box>
+            
                 </Box>
-                {/* <Typography variant="h4" sx={{
-                    ml: 2
-                }}>
-                </Typography> */}
+               
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                     {/* <div style={{width: '1px', height:'28px', background:'#C7C8CC', marginRight: '9px'}}></div> */}
                     <ConnectBtn />

@@ -22,7 +22,7 @@ const Header = ({ open, handleDrawerToggle }) => {
 
     // common header
     const mainHeader = (
-        <Toolbar sx={{paddingTop:'22px', paddingBottom:'22px', background: '#0B0C13'}}>
+        <Toolbar sx={{paddingTop:'28px', paddingBottom:'28px', mb:3}}>
             <IconButton
                 disableRipple
                 aria-label="open drawer"
@@ -43,6 +43,7 @@ const Header = ({ open, handleDrawerToggle }) => {
         color: 'inherit',
         elevation: 0,
         sx: {
+            bgcolor: 'inherit'
             //borderBottom: `1px solid ${theme.palette.divider}`
             // boxShadow: theme.customShadows.z1
         }

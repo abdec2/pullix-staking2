@@ -348,15 +348,7 @@ const DashboardDefault = () => {
 
             {/* row 2 */}
             <Grid item xs={12} >
-                <Card 
-                    sx={{
-                        borderRadius: '20px',
-                        p: '1px',
-                        background: 'linear-gradient(104.17deg, #EF9933 0%, rgba(169, 108, 36, 0) 70%, #EF9933 100%)',
-                    }}
-                >
-                    <TimeComponent />
-                </Card>
+                <TimeComponent />
             </Grid>
            
 
