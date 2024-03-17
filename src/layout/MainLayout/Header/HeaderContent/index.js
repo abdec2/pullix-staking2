@@ -9,6 +9,8 @@ import Notification from './Notification';
 import MobileSection from './MobileSection';
 import { ConnectBtn } from 'components/ConnectBtn';
 import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
+import { ChevronDown, EnFlag } from 'components/icons/index';
+import { Stack } from '../../../../../node_modules/@mui/material/index';
 
 
 // ==============================|| HEADER - CONTENT ||============================== //
@@ -42,10 +44,14 @@ const HeaderContent = () => {
             
                 </Box>
                
-                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     {/* <div style={{width: '1px', height:'28px', background:'#C7C8CC', marginRight: '9px'}}></div> */}
                     <ConnectBtn />
                     <div style={{width: '1px', height:'28px', background:'#C7C8CC', marginLeft: '24px', marginRight: '2px'}}></div>
+                    <Stack direction='row' alignItems='center' justifyContent='space-between' spacing={1.5} sx={{ml:3}}>
+                        <EnFlag />
+                        <ChevronDown />
+                    </Stack>
                 </Box>
             </Box>
 

@@ -110,7 +110,7 @@ const styles = {
         border: '1px solid',
         width: '100%',
         fontSize: '11px',
-        padding: '13px 18px',
+        padding: '19px 18px',
         background: 'none',
         color: '#9CA6B8',
         borderRadius: '5px',
@@ -177,8 +177,7 @@ const status = [
 
 const Token = styled(Paper)(({ theme }) => ({
     background: "rgba(156,166,184,0.18)",
-    borderRadius: '5px',
-    padding: "12px",
+    borderRadius: '0px',
     boxShadow: "none",
     width: "100%"
 }))
@@ -394,45 +393,49 @@ const DashboardDefault = () => {
                     px: '26px',
                     py: '18px'
                 }}> 
-                    <Grid container spacing={2.25} >
+                    <Grid container  >
                         <Grid item xs={12} > 
                             <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:1.75, fontSize: '11px', borderBottom: '1px solid #9CA6B8' }} >Token Rate</Typography>
                             
                         </Grid>
-                        
-                    </Grid>
 
-                    {/* <Box>
-                        <Typography variant="h4" color="#fff" sx={{ fontWeight: 700, mb: 2.25, fontSize: '14px' }} >Token Rate</Typography>
-                        <Stack direction="column" spacing={1.13} alignItems="center" justifyContent="space-between">
+                        <Grid item xs={12} sx={{mb:0.8}}>
                             <Token>
-                                <Stack direction="row" alignItems="center" spacing={3.5}>
-                                    <USDT />
-                                    <Stack spacing={2}>
+                                <Stack direction="row" alignItems="center" >
+                                    <Box sx={{height: '55px', width: '55px', background: '#0B0C13', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+                                        <USDT />
+                                    </Box>
+                                    <Stack sx={{ml: '27px'}}>
                                         <Stack direction="row" spacing={1.2} alignItems="center">
                                             <Typography variant="p" color="#fff" sx={{ fontWeight: 700, fontSize: '10px' }} >USDT</Typography>
                                             <div style={{ width: "1px", height: "10px", background: "#C7C8CC" }}></div>
-                                            <Typography variant="p" color="#9CA6B8" sx={{ fontWeight: 700, fontSize: '10px'}} >Tether USD</Typography>
+                                            <Typography variant="p" color="#9D9D9D" sx={{ fontWeight: 700, fontSize: '10px'}} >Tether USD</Typography>
                                         </Stack>
-                                        <Typography variant="p" color="#fff" sx={{ fontWeight: 900, fontSize: '14px' }} >$ 1.00 USD</Typography>
+                                        <Typography variant="p" color="#EF9933" sx={{ fontWeight: 700, fontSize: '14px' }} >$ 1.00 USD</Typography>
                                     </Stack>
                                 </Stack>
                             </Token>
+                        </Grid>
+                        <Grid item xs={12}>
                             <Token>
-                                <Stack direction="row" alignItems="center" spacing={3.5}>
-                                    <ORBN />
-                                    <Stack spacing={2}>
+                                <Stack direction="row" alignItems="center" >
+                                    <Box sx={{height: '55px', width: '55px', background: '#0B0C13', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+                                        <ORBN />
+                                    </Box>
+                                    <Stack sx={{ml: '27px'}}>
                                         <Stack direction="row" spacing={1.2} alignItems="center">
                                             <Typography variant="p" color="#fff" sx={{ fontWeight: 700, fontSize: '10px' }} >PLX</Typography>
                                             <div style={{ width: "1px", height: "10px", background: "#C7C8CC" }}></div>
-                                            <Typography variant="p" color="#9CA6B8" sx={{ fontWeight: 700, fontSize: '10px' }} >Pullix</Typography>
+                                            <Typography variant="p" color="#9D9D9D" sx={{ fontWeight: 700, fontSize: '10px'}} >Pullix</Typography>
                                         </Stack>
-                                        <Typography variant="p" color="#fff"  sx={{ fontWeight: 900, fontSize: '14px' }} >$ {blockchainData.orbn_usd_price.toFixed(3)} USD</Typography>
+                                        <Typography variant="p" color="#EF9933" sx={{ fontWeight: 700, fontSize: '14px' }} >$ 0.000125 USD</Typography>
                                     </Stack>
                                 </Stack>
                             </Token>
-                        </Stack>
-                    </Box> */}
+                        </Grid>
+                    </Grid>
+
+                    
                 </Card>
             </Grid>
 

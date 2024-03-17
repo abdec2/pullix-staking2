@@ -45,7 +45,7 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
                             width: drawerWidth,
                             backgroundImage: 'none',
                             boxShadow: 'inherit', 
-                            bgcolor: "rgba(0,0,0,0.5)"
+                            bgcolor: "rgba(0,0,0,0.8)"
                         }
                     }}
                 >

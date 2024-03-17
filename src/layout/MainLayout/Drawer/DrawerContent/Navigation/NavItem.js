@@ -49,7 +49,7 @@ const NavItem = ({ item, level }) => {
         // eslint-disable-next-line
     }, []);
 
-    const textColor = 'text.primary';
+    const textColor = '#fff';
     const iconSelectedColor = '#fff';
 
     return (
@@ -59,6 +59,7 @@ const NavItem = ({ item, level }) => {
             onClick={() => itemHandler(item.id)}
             selected={isSelected}
             sx={{
+                mb: 2,
                 zIndex: 1201,
                 pl: drawerOpen ? `${level * 28}px` : 1.5,
                 py: !drawerOpen && level === 1 ? 1.25 : 1,

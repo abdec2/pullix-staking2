@@ -11,7 +11,7 @@ const openedMixin = (theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
     }),
-    background: 'rgba(0,0,0,0.5)',
+    background: 'rgba(0,0,0,0.8)',
     overflowX: 'hidden',
     boxShadow: 'none',
     border: 'none'

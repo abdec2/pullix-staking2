@@ -9,6 +9,7 @@ import { Box, Toolbar, useMediaQuery } from '@mui/material';
 // project import
 import Drawer from './Drawer';
 import Header from './Header';
+import FooterComponent from './FooterComponent'
 import navigation from 'menu-items';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 
@@ -58,6 +59,7 @@ const MainLayout = () => {
                     {/* <Toolbar /> */}
                     {/* <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} /> */}
                     <Outlet />
+                    <FooterComponent />
                 </Box>
             </Box>
         </>
