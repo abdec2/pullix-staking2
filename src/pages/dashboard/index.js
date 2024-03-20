@@ -439,6 +439,48 @@ const DashboardDefault = () => {
                 </Card>
             </Grid>
 
+            <Grid item xs={12} >
+                <Card  sx={{
+                    bgcolor: '#161A28',
+                    borderRadius: '0px',
+                    px: '26px',
+                    py: '18px'
+                }}> 
+                    <Grid container sx={{mb:2}}>
+                        <Grid item xs={12} > 
+                            <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:1.75, fontSize: '11px', borderBottom: '1px solid #9CA6B8' }} >Claim Your Presale Tokens</Typography>
+                            
+                        </Grid>
+                        <Grid item xs={12} >
+                            <Typography variant="p" color="#fff" sx={{ fontWeight: 500, fontSize: '10px' }}>
+                                <span style={{fontWeight: 700, fontSize:'11px'}}>Please Note: </span> There are two ways you can claim your presale tokens:
+                            </Typography>
+                            <Box>
+                                <Typography variant="p" color="#fff" sx={{ fontWeight: 500, fontSize: '10px' }}>
+                                    <span style={{fontWeight: 700, fontSize:'11px'}}> Stake: </span>  All of your token balance will be staked for 180 days
+                                </Typography>
+                            </Box>
+                            <Box>
+                                <Typography variant="p" color="#fff" sx={{ fontWeight: 500, fontSize: '10px' }}>
+                                    <span style={{fontWeight: 700, fontSize:'11px'}}> Claim: </span>  You will receive your balances in 4 installments. 
+                                </Typography>
+                            </Box>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={2} >
+                        <Grid item xs={12} sm={6} >
+                            <Button sx={{ ...styles.btn1 }} >Stake</Button>
+                        </Grid>
+                        <Grid item xs={12} sm={6} >
+                            <Button sx={{ ...styles.btn2 }} >Claim</Button>
+                        </Grid>
+                    </Grid>
+
+                    
+                </Card>
+            </Grid>
+
 
         </Grid>
     );
