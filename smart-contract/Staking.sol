@@ -1302,6 +1302,8 @@ contract MasterChef is Ownable, ReentrancyGuard {
     
     // rewards durations
     uint256 public rewardDuration = 365 days;
+
+    address private claimingContract;
     
     // Info of each pool.
     PoolInfo[] public poolInfo;
@@ -1327,8 +1329,21 @@ contract MasterChef is Ownable, ReentrancyGuard {
         rewardToken = IERC20(_rewardToken);
     }
 
+    modifier onlyClaimingContract {
+        require(msg.sender == claimingContract);
+        _;
+    }
+
     function poolLength() external view returns (uint256) {
         return poolInfo.length;
+    }
+
+    function getClaimingContract() external view returns (address) {
+        return claimingContract;
+    }
+
+    function setClaimingContract(address _claimingContract) external onlyOwner {
+        claimingContract = _claimingContract;
     }
 
     function stakeHoldersLength(uint256 _pid) external view returns (uint256) {
@@ -1418,7 +1433,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
         updatePool(_pid);
-        LockupPendingToken(_pid);
+        LockupPendingToken(_pid, msg.sender);
         if (_amount > 0) {
             if( user.amount == 0 ) {
                 addStakeholder(msg.sender, _pid);
@@ -1432,20 +1447,20 @@ contract MasterChef is Ownable, ReentrancyGuard {
         user.rewardDebt = user.amount.mul(pool.accTokenPerShare).div(1e18);
     }
 
-    function deposit(uint256 _pid, uint256 _amount, address _sender) external nonReentrant { 
+    function deposit(uint256 _pid, uint256 _amount, address _owner, address _sender) external onlyClaimingContract nonReentrant { 
         PoolInfo storage pool = poolInfo[_pid];
-        UserInfo storage user = userInfo[_pid][msg.sender];
+        UserInfo storage user = userInfo[_pid][_sender];
         updatePool(_pid);
-        LockupPendingToken(_pid);
+        LockupPendingToken(_pid, _sender);
         if (_amount > 0) {
             if( user.amount == 0 ) {
-                addStakeholder(msg.sender, _pid);
+                addStakeholder(_sender, _pid);
                 user.timestamp = block.timestamp;
             }
-            pool.lpToken.safeTransferFrom(address(_sender), address(this), _amount);
+            pool.lpToken.safeTransferFrom(address(_owner), address(this), _amount);
             user.amount = user.amount.add(_amount);
             pool.totalSupply = pool.totalSupply.add(_amount);
-            emit Deposit(msg.sender, _pid, user.amount);
+            emit Deposit(_sender, _pid, user.amount);
         }
         user.rewardDebt = user.amount.mul(pool.accTokenPerShare).div(1e18);
     }
@@ -1458,7 +1473,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
         // require(block.timestamp >= user.timestamp.add(pool.duration), "Stake period is not expired.."); // production
         require(block.timestamp >= user.timestamp.add(5 minutes), "Stake period is not expired.."); // testing
         updatePool(_pid);
-        LockupPendingToken(_pid);
+        LockupPendingToken(_pid, msg.sender);
         if (_amount > 0) {
             user.amount = user.amount.sub(_amount);
             pool.totalSupply = pool.totalSupply.sub(_amount);
@@ -1474,9 +1489,9 @@ contract MasterChef is Ownable, ReentrancyGuard {
     }
 
     // Pay or lockup pending 888s.
-    function LockupPendingToken(uint256 _pid) internal {
+    function LockupPendingToken(uint256 _pid, address _msgSender) internal {
         PoolInfo storage pool = poolInfo[_pid];
-        UserInfo storage user = userInfo[_pid][msg.sender];
+        UserInfo storage user = userInfo[_pid][_msgSender];
 
         uint256 pending = user.amount.mul(pool.accTokenPerShare).div(1e18).sub(user.rewardDebt); 
 
@@ -1489,7 +1504,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
         updatePool(_pid);
-        LockupPendingToken(_pid);
+        LockupPendingToken(_pid, msg.sender);
 
         require(block.timestamp >= user.timestamp.add(pool.duration).add(60 days), "Rewards release not allowed..");
 

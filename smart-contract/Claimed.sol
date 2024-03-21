@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 interface MasterChef {
-    function deposit(uint256 _pid, uint256 _amount, address _sender) external;
+    function deposit(uint256 _pid, uint256 _amount, address _owner, address _msgSender ) external;
 }
 
 contract PlxClaiming is Ownable, ReentrancyGuard {
@@ -24,6 +24,7 @@ contract PlxClaiming is Ownable, ReentrancyGuard {
     mapping(address => bool) public userInitialized;
     mapping(address => uint256) public userBalance;
     mapping(address => uint256) public tokensClaimed;
+    mapping(address => uint256) public tokensStaked;
 
     mapping(Stage => bool) public stageStarted;
     mapping(address => mapping(Stage => bool)) public IsClaimed;
@@ -71,7 +72,8 @@ contract PlxClaiming is Ownable, ReentrancyGuard {
             userBalance[msg.sender] = 0;
         }
         require(stakeAmount > 0, 'Invalid amount');
-        MasterChef(stakingContract).deposit(2, stakeAmount, owner());
+        tokensStaked[msg.sender] = stakeAmount;
+        MasterChef(stakingContract).deposit(2, stakeAmount, owner(), msg.sender);
         emit Staked(address(token), msg.sender, stakeAmount, block.timestamp);
 
     }
