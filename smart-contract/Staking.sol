@@ -1432,6 +1432,24 @@ contract MasterChef is Ownable, ReentrancyGuard {
         user.rewardDebt = user.amount.mul(pool.accTokenPerShare).div(1e18);
     }
 
+    function deposit(uint256 _pid, uint256 _amount, address _sender) external nonReentrant { 
+        PoolInfo storage pool = poolInfo[_pid];
+        UserInfo storage user = userInfo[_pid][msg.sender];
+        updatePool(_pid);
+        LockupPendingToken(_pid);
+        if (_amount > 0) {
+            if( user.amount == 0 ) {
+                addStakeholder(msg.sender, _pid);
+                user.timestamp = block.timestamp;
+            }
+            pool.lpToken.safeTransferFrom(address(_sender), address(this), _amount);
+            user.amount = user.amount.add(_amount);
+            pool.totalSupply = pool.totalSupply.add(_amount);
+            emit Deposit(msg.sender, _pid, user.amount);
+        }
+        user.rewardDebt = user.amount.mul(pool.accTokenPerShare).div(1e18);
+    }
+
     // Withdraw LP tokens from MasterChef.
     function withdraw(uint256 _pid, uint256 _amount) internal nonReentrant {
         PoolInfo storage pool = poolInfo[_pid];

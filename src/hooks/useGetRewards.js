@@ -9,6 +9,7 @@ const stakingContract = {
     abi: stakingAbi,
 }
 
+
 const useGetRewards = () => {
     const { address, isConnected } = useAccount()
     const { blockchainData, updateRewards } = useContext(GlobalContext)

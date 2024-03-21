@@ -41,9 +41,10 @@ const initialState = {
     rewards: [],
     orbn_usd_price: 0,
     usdt_usd_price: 0,
-    graphData: {
-        orbn: [],
-        usdt: []
+    claimData: {
+        userInitialized: 0,
+        userBalance: 0,
+        tokensClaimed: 0
     }
 }
 
@@ -188,6 +189,13 @@ export const GlobalProvider = ({ children }) => {
         })
     }
 
+    const updateClaimData = (data) => {
+        dispatch({
+            type: 'UPDATE_CLAIM_DATA',
+            payload: data
+        })
+    }
+
     const updateGraphData = (data) => {
         dispatch({
             type: 'UPDATE_GRAPH_DATA',
@@ -316,6 +324,7 @@ export const GlobalProvider = ({ children }) => {
                 updateLoading,
                 updatePools,
                 updateRewards,
+                updateClaimData,
                 fetchData,
                 UpdateOrbnPrice,
                 UpdateUSDTPrice

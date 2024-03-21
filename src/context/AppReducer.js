@@ -40,6 +40,12 @@ export const AppReducer = (state, action) => {
                 rewards: action.payload
             }
 
+        case 'UPDATE_CLAIM_DATA':
+            return {
+                ...state,
+                claimData: action.payload
+            }
+
         case 'UPDATE_ORBN_PRICE':
             return {
                 ...state,

@@ -54,6 +54,7 @@ import useAccountData from 'hooks/useAccountData';
 import useGetRewards from 'hooks/useGetRewards';
 import { Card } from '../../../node_modules/@mui/material/index';
 import { StakersIcon, TvlIcon } from 'components/icons/index';
+import useUserClaimData from 'hooks/useUserClaimData';
 
 // avatar style
 const avatarSX = {
@@ -189,6 +190,7 @@ const Token = styled(Paper)(({ theme }) => ({
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const DashboardDefault = () => {
+    const [totalPurchaseAmount, setTotalPurchaseAmount] = useState(0) 
     const { address, isConnected } = useAccount()
     const { data: signer } = useSigner()
     const { openConnectModal } = useConnectModal()
@@ -198,6 +200,7 @@ const DashboardDefault = () => {
 
     const refetchAccountData = useAccountData()
     const refetchRewards = useGetRewards()
+    const refetchClaimData = useUserClaimData()
 
     const totalLockedValue = (parseFloat(blockchainData.lockedTokens.orbn) * 0.1125 )
 
@@ -353,6 +356,7 @@ const DashboardDefault = () => {
             await stakeTx.wait()
             console.log(stakeTx) 
             updateLoading(false)
+            refetchClaimData();
             AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
         } catch (e) {
             updateLoading(false)
@@ -361,16 +365,48 @@ const DashboardDefault = () => {
     }
 
     const handlePresaleStake = async () => {
-        const tree = StandardMerkleTree.load(treeJson);
-        let proof;
-        let amount;
-        for (const [i, v] of tree.entries()) {
-            if (v[0] === address) {
-              proof = tree.getProof(i);
-              amount = v[1]
+        try {
+            updateLoading(true)
+            const tree = StandardMerkleTree.load(treeJson);
+            let proof;
+            let amount;
+            for (const [i, v] of tree.entries()) {
+                if (v[0] === address) {
+                proof = tree.getProof(i);
+                amount = v[1]
+                }
             }
+            
+            const contract = new ethers.Contract(CONFIG.CLAIM_CONTRACT, claimAbi, signer)
+            const estimate = await contract.estimateGas.Stake(amount, proof)
+            const stakeTx = await contract.Stake(amount, proof, { gasLimit: estimate.toString() })
+            await stakeTx.wait()
+            console.log(stakeTx) 
+            fetchData()
+            refetchAccountData()
+            refetchRewards()
+            refetchClaimData();
+            updateLoading(false)
+            AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
+        } catch (e) {
+            updateLoading(false)
+            AlertMsg({ title: 'Oops!', msg: 'Something went wrong', icon: 'error' })
         }
-    }
+    } 
+
+    useEffect(() => {
+        if(isConnected){
+            const tree = StandardMerkleTree.load(treeJson);
+            let totalTokens = 0;
+            for (const [i, v] of tree.entries()) {
+                if (v[0] === address) {
+                    totalTokens = v[1]
+                }
+            }
+
+            setTotalPurchaseAmount(ethers.utils.formatEther(totalTokens))
+        }
+    }, [address, isConnected])
 
 
     return (
@@ -492,6 +528,18 @@ const DashboardDefault = () => {
                             <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:1.75, fontSize: '11px', borderBottom: '1px solid #9CA6B8' }} >Claim Your Presale Tokens</Typography>
                             
                         </Grid>
+
+                        <Grid item xs={12} sx={{display:'flex', alignItems: 'center', justifyContent: 'space-between'}}> 
+                            <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:0, fontSize: '14px' }} >Total PLX Purchase : {new Intl.NumberFormat('en-us').format(totalPurchaseAmount)} PLX</Typography>
+                            <Typography variant="h4" color="#EF9933" sx={{ fontWeight: 700, pb: 2, mb:0, fontSize: '14px' }} >Remaining PLX Balance : {
+                                blockchainData.claimData.userInitialized ? (
+                                    new Intl.NumberFormat('en-us').format(blockchainData.claimData.userBalance)
+                                ) : (
+                                    new Intl.NumberFormat('en-us').format(totalPurchaseAmount)
+                                )
+                            } PLX</Typography>
+                        </Grid>
+
                         <Grid item xs={12} >
                             <Typography variant="p" color="#fff" sx={{ fontWeight: 500, fontSize: '10px' }}>
                                 <span style={{fontWeight: 700, fontSize:'11px'}}>Please Note: </span> There are two ways you can claim your presale tokens:
@@ -506,6 +554,23 @@ const DashboardDefault = () => {
                                     <span style={{fontWeight: 700, fontSize:'11px'}}> Claim: </span>  You will receive your balances in 4 installments. 
                                 </Typography>
                             </Box>
+                        </Grid>
+                        <Grid item xs={12} >
+                            <Typography variant="p" color="#fff" sx={{ fontWeight: 500, fontSize: '10px' }}>
+                                <span style={{fontWeight: 700, fontSize:'11px'}}>Claiming Schedule: </span> User can start claiming their presale token as per following schedule:
+                            </Typography>
+                            <Box color="#fff" sx={{ fontWeight: 500, fontSize: '10px' }}>
+                                <ul style={{margin: '4px 0px'}}>
+                                    <li>First Claim of 25% starts from March 28, 2024</li>
+                                    <li>Second Claim of 25% starts from April 28, 2024</li>
+                                    <li>Third Claim of 25% starts from May 28, 2024</li>
+                                    <li>Fourth Claim of 25% starts from June 28, 2024</li>
+                                </ul>
+                                {/* <Typography variant="p" color="#fff" sx={{ fontWeight: 500, fontSize: '10px' }}>
+                                    
+                                </Typography> */}
+                            </Box>
+
                         </Grid>
                     </Grid>
 
