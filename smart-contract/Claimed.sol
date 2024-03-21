@@ -60,7 +60,7 @@ contract PlxClaiming is Ownable, ReentrancyGuard {
     function Stake(uint256 _amount, bytes32[] memory proof) external nonReentrant {
         require(msg.sender != address(0), "CONTRACT: Caller is zero address");
         require(address(token) != address(0), "CONTRACT: Token is not set.");
-        require(isValid(proof, keccak256(abi.encodePacked(msg.sender, _amount))), "Caller not whitelisted");
+        require(isValid(proof, keccak256(bytes.concat(keccak256(abi.encode(msg.sender, _amount))))), "Caller not whitelisted");
 
         uint256 stakeAmount = 0;
         if(!userInitialized[msg.sender]) {
@@ -79,7 +79,7 @@ contract PlxClaiming is Ownable, ReentrancyGuard {
     function Claim(uint256 _amount, bytes32[] memory proof) external nonReentrant {
         require(msg.sender != address(0), "CONTRACT: Caller is zero address");
         require(address(token) != address(0), "CONTRACT: Token is not set.");
-        require(isValid(proof, keccak256(abi.encodePacked(msg.sender, _amount))), "Caller not whitelisted");
+        require(isValid(proof, keccak256(bytes.concat(keccak256(abi.encode(msg.sender, _amount))))), "Caller not whitelisted");
 
         if(!userInitialized[msg.sender]) {
            userInitialized[msg.sender]  = true;

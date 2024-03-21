@@ -38,7 +38,10 @@ import TimeComponent from 'components/TimeComponent';
 import { AlertMsg } from 'components/AlertMsg'
 import StakeAbi from './../../configs/staking.json'
 import TokenAbi from './../../configs/token.json'
+import claimAbi from './../../configs/claim.json'
+import treeJson from './../../configs/tree.json'
 
+import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 
 // assets
 import { USDT, ORBN } from "components/icons"
@@ -331,6 +334,44 @@ const DashboardDefault = () => {
         }
     }
 
+    const handlePresaleClaim = async () => {
+        try {
+            updateLoading(true)
+            const tree = StandardMerkleTree.load(treeJson);
+            let proof;
+            let amount;
+            for (const [i, v] of tree.entries()) {
+                if (v[0] === address) {
+                proof = tree.getProof(i);
+                amount = v[1]
+                }
+            }
+            
+            const contract = new ethers.Contract(CONFIG.CLAIM_CONTRACT, claimAbi, signer)
+            const estimate = await contract.estimateGas.Claim(amount, proof)
+            const stakeTx = await contract.Claim(amount, proof, { gasLimit: estimate.toString() })
+            await stakeTx.wait()
+            console.log(stakeTx) 
+            updateLoading(false)
+            AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
+        } catch (e) {
+            updateLoading(false)
+            AlertMsg({ title: 'Oops!', msg: 'Something went wrong', icon: 'error' })
+        }
+    }
+
+    const handlePresaleStake = async () => {
+        const tree = StandardMerkleTree.load(treeJson);
+        let proof;
+        let amount;
+        for (const [i, v] of tree.entries()) {
+            if (v[0] === address) {
+              proof = tree.getProof(i);
+              amount = v[1]
+            }
+        }
+    }
+
 
     return (
         <Grid container rowSpacing={2} columnSpacing={2} sx={{ paddingTop: '5px' }}>
@@ -470,10 +511,10 @@ const DashboardDefault = () => {
 
                     <Grid container spacing={2} >
                         <Grid item xs={12} sm={6} >
-                            <Button sx={{ ...styles.btn1 }} >Stake</Button>
+                            <Button sx={{ ...styles.btn1 }} onClick={handlePresaleStake}>Stake</Button>
                         </Grid>
                         <Grid item xs={12} sm={6} >
-                            <Button sx={{ ...styles.btn2 }} >Claim</Button>
+                            <Button sx={{ ...styles.btn2 }} onClick={handlePresaleClaim}>Claim</Button>
                         </Grid>
                     </Grid>
 
