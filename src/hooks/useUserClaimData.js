@@ -1,9 +1,9 @@
 import { GlobalContext } from "context/GlobalContext"
 import { useContext, useEffect } from "react"
-import { useContractReads, useAccount } from "wagmi"
+import { useReadContracts, useAccount } from "wagmi"
+import { formatEther } from 'viem'
 import { CONFIG } from './../configs/config'
 import claimAbi from './../configs/claim.json'
-import { ethers } from "ethers"
 
 const claimingContract = {
     address: CONFIG.CLAIM_CONTRACT,
@@ -15,7 +15,7 @@ const useUserClaimData = () => {
     const { address, isConnected } = useAccount()
     const { blockchainData, updateClaimData } = useContext(GlobalContext)
 
-    const { data, isLoading, isError, refetch } = useContractReads({
+    const { data, isPending, isSuccess, refetch } = useReadContracts({
         contracts: [
             {
                 ...claimingContract,
@@ -32,25 +32,23 @@ const useUserClaimData = () => {
                 functionName: 'tokensClaimed',
                 args: [address]
             },
-        ], 
-        enabled: false,
-        onSuccess(data) {
-            // updateRewards(data)
+        ]
+    })
+
+    useEffect(() => {
+        if(isConnected && !isSuccess) {
+            refetch()
+        } 
+        if(isSuccess) {
             const claimData = {
-                userInitialized: data[0],
-                userBalance: ethers.utils.formatEther(data[1]),
-                tokensClaimed: ethers.utils.formatEther(data[2])
+                userInitialized: data[0].result,
+                userBalance: formatEther(data[1].result),
+                tokensClaimed: formatEther(data[2].result)
             }
 
             updateClaimData(claimData)
         }
-    })
-
-    useEffect(() => {
-        if(isConnected) {
-            refetch()
-        } 
-    }, [isConnected, address])
+    }, [isConnected, address, isPending, isSuccess])
 
     return refetch
 }
