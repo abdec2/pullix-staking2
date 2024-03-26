@@ -22,7 +22,7 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { sepolia } from 'wagmi/chains';
+import { mainnet } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
@@ -31,18 +31,18 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 import './index.css';
 const { chains, provider } = configureChains(
-  [sepolia],
+  [mainnet],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        http: `https://eth-sepolia.g.alchemy.com/v2/ULCYxRz4xj8UZPvqkE3wcosH-ZifiEeo`,
+        http: `https://cloudflare-eth.com`,
       }),
     }),
   ]
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'Orbeon Staking',
+  appName: 'PLX Staking',
   chains
 });
 
