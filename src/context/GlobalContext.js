@@ -1,17 +1,15 @@
 import { createContext, useEffect, useReducer } from "react";
 import { AppReducer } from './AppReducer'
-import { useContractReads } from "wagmi";
+import { useReadContracts } from "wagmi";
 import { CONFIG } from '../configs/config'
 import tokenAbi from './../configs/token.json'
 import stakingAbi from './../configs/staking.json'
-// import { firestore } from "firebaseConfig";
-// import { collection, where, query, getDocs } from "@firebase/firestore"
+
+import { formatUnits } from 'viem'
 
 import pairAbi from './../configs/pairAbi.json'
 import routerAbi from './../configs/routerAbi.json'
 
-import { ethers } from "ethers";
-import { useProvider } from "wagmi";
 
 const orbnContract = {
     address: CONFIG.ORBN_ADDRESS,
@@ -52,8 +50,7 @@ export const GlobalContext = createContext(initialState)
 
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
-    const provider = useProvider()
-    const { data, isError, isLoading, refetch } = useContractReads({
+    const { data, isPending, isSuccess, refetch } = useReadContracts({
         contracts: [
             {
                 ...orbnContract,
@@ -61,15 +58,10 @@ export const GlobalProvider = ({ children }) => {
                 args: [CONFIG.STAKING_CONTRACT]
             }
 
-        ],
-        onSuccess(data) {
-            updateLockedTokens({
-                orbn: ethers.utils.formatUnits(data[0].toString(), CONFIG.ORBN_DECIMALS),
-            })
-            // getTokenPrice()
-        },
+        ]
+        
     })
-    const { data: apy, isError: apy_err, isLoading: apy_loading } = useContractReads({
+    const { data: apy, error: apy_err, isPending: pending_apy, isSuccess: isSuccess_apy  } = useReadContracts({
         contracts: [
             {
                 ...stakingContract,
@@ -86,20 +78,11 @@ export const GlobalProvider = ({ children }) => {
                 functionName: 'poolInfo',
                 args: [2]
             }
-        ],
-        onSuccess(data) {
-            console.log('Success', data)
-            const apyObj = {}
-            data.map((item, i) => {
-                apyObj[i] = item.apy.toString()
-            })
-            UpdateApy(apyObj)
-            updatePools(data)
-        },
+        ]
 
     })
 
-    const stakeHoldersCR = useContractReads({
+    const {data: st_data, isPending: st_pending, isSuccess: st_success, refetch: st_refetch} = useReadContracts({
         contracts: [
             {
                 ...stakingContract,
@@ -116,14 +99,8 @@ export const GlobalProvider = ({ children }) => {
                 functionName: 'stakeHoldersLength',
                 args: [2]
             }
-        ],
-        onSuccess(data) {
-            let noOfStakers = 0
-            data.map(item => {
-                noOfStakers += parseInt(item.toString())
-            })
-            updateStakers(noOfStakers)
-        },
+        ]
+
     })
 
     const updateLockedTokens = (lockedTokens) => {
@@ -204,114 +181,42 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const getEthInUSD = async (pair) => {
-        const req = await fetch(`https://api.coinbase.com/v2/prices/${pair}/spot`)
+        const req = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=pullix&vs_currencies=usd`)
         const res = await req.json()
-        return res.data
-    }
-
-    const getPreviousBlockNumber = async () => {
-        let currenttimestamp = new Date().getTime()
-        let timestamp = currenttimestamp - (86400 * 1000 * 7)
-        timestamp = Math.floor(timestamp / 1000)
-
-        let minBlockNumber = 8634113
-        let maxBlockNumber = await provider.getBlockNumber();
-        let closestBlockNumber = Math.floor((maxBlockNumber + minBlockNumber) / 2)
-        let closestBlock = await provider.getBlock(closestBlockNumber);
-        let foundExactBlock = false
-
-        while (minBlockNumber <= maxBlockNumber) {
-            if (closestBlock.timestamp === timestamp) {
-                foundExactBlock = true
-                break;
-            } else if (closestBlock.timestamp > timestamp) {
-                maxBlockNumber = closestBlockNumber - 1
-            } else {
-                minBlockNumber = closestBlockNumber + 1
-            }
-
-            closestBlockNumber = Math.floor((maxBlockNumber + minBlockNumber) / 2)
-            closestBlock = await provider.getBlock(closestBlockNumber);
-        }
-
-        const previousBlockNumber = closestBlockNumber - 1
-        const previousBlock = await provider.getBlock(previousBlockNumber);
-        const nextBlockNumber = closestBlockNumber + 1
-        const nextBlock = await provider.getBlock(nextBlockNumber);
-
-        return closestBlockNumber
-    }
-
-    const getDepositEvents = async () => {
-        // const contract = new ethers.Contract(CONFIG.STAKING_CONTRACT, stakingAbi, provider)
-        // const fromBlock = 16982905
-        // const events = await contract.queryFilter("Deposit", fromBlock)
-        // const usdtChartData = []
-        // const orbnChartData = []
-        // console.log(events)
-        // events.map(item => {
-        //     const pid = parseInt(item.args.pid.toString())
-        //     if(pid < 5) {
-        //         const amount = Number(ethers.utils.formatUnits(item.args.amount, CONFIG.ORBN_DECIMALS))
-        //         orbnChartData.push(amount)
-        //     } else {
-        //         const amount = Number(ethers.utils.formatUnits(item.args.amount, CONFIG.USDT_DECIMALS))
-        //         usdtChartData.push(amount)
-        //     }
-        // })
-        const curr = new Date()
-        const year = curr.getFullYear()
-        const month = ((curr.getMonth() + 1) < 10) ? "0" + (curr.getMonth() + 1) : (curr.getMonth() + 1)
-        const day = (curr.getDate() < 10) ? "0" + (curr.getDate()) : (curr.getDate())
-        const cur_date = year + "-" + month + "-" + day
-
-
-        // const ref = collection(firestore, "staking")
-        // const q = query(ref, where("timestamp", "<=", cur_date))
-        // const querySnapshot = await getDocs(q);
-        // querySnapshot.forEach((doc) => {
-        //     // doc.data() is never undefined for query doc snapshots
-        //     console.log(doc);
-        // });
-
-
-
-        // updateGraphData({orbn: orbnChartData, usdt: usdtChartData})
-    }
-
-    const getTokenPrice = async () => {
-        updateLoading(true)
-        const provider = new ethers.providers.JsonRpcProvider('https://eth-mainnet.g.alchemy.com/v2/D1wTLdl4HcV0JAW9PUtKxGPTf2Sy-wUZ')
-        const pairContract = new ethers.Contract(CONFIG.UNISWAP_PAIR_ADDRESS, pairAbi, provider)
-        const WETHAddress = await pairContract.token0()
-        const ORBNAddress = await pairContract.token1()
-        const getReserves = await pairContract.getReserves()
-        const routerContract = new ethers.Contract(CONFIG.UNISWAP_ROUTER_ADDRESS, routerAbi, provider)
-        const getAmountOut = await routerContract.quote(ethers.utils.parseUnits('1', 9), getReserves._reserve0, getReserves._reserve1)
-        const finalAmount = (parseInt(getAmountOut.toString()) / 1e18)
-        const ethPriceInUSD = await getEthInUSD('ETH-USD')
-        const USDTPriceInUSD = await getEthInUSD('USDT-USD')
-        const perTokenORBNPriceInUSD = finalAmount * parseFloat(ethPriceInUSD.amount)
-        const perTokenUSDTPriceinUSD = USDTPriceInUSD.amount
-        UpdateOrbnPrice(perTokenORBNPriceInUSD)
-        UpdateUSDTPrice(perTokenUSDTPriceinUSD)
-
-        await getDepositEvents()
-        updateLoading(false)
+        return res
     }
 
     const fetchData = async () => {
         refetch()
-        stakeHoldersCR.refetch()
+        st_refetch()
     }
 
     useEffect(() => {
-        if (isLoading || apy_loading) {
-            updateLoading(true)
-        } else {
-            updateLoading(false)
+        if(isSuccess) {
+            updateLockedTokens({
+                orbn: formatUnits(data[0].result.toString(), CONFIG.ORBN_DECIMALS),
+            })
         }
-    }, [isLoading, apy_loading])
+        if(isSuccess_apy) {
+            const apyObj = {}
+            const poolArray = []
+            apy.map((item, i) => {
+                apyObj[i] = item.result.apy.toString()
+                poolArray.push(item.result)
+            })
+            UpdateApy(apyObj)
+            updatePools(poolArray)
+        }
+
+        if(st_success) {
+            let noOfStakers = 0
+            st_data.map(item => {
+                noOfStakers += parseInt(item.result.toString())
+            })
+            updateStakers(noOfStakers)
+        }
+
+    }, [isPending, isSuccess, pending_apy, isSuccess_apy, st_pending, st_success])
 
     return (
         <GlobalContext.Provider value={
@@ -327,7 +232,8 @@ export const GlobalProvider = ({ children }) => {
                 updateClaimData,
                 fetchData,
                 UpdateOrbnPrice,
-                UpdateUSDTPrice
+                UpdateUSDTPrice,
+                getEthInUSD
             }
         }
         >

@@ -17,39 +17,57 @@ import App from './App';
 import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
 
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-
-import '@rainbow-me/rainbowkit/styles.css';
-
+// https://cloudflare-eth.com
 import './index.css';
-const { chains, provider } = configureChains(
-  [mainnet],
-  [
-    jsonRpcProvider({
-      rpc: (chain) => ({
-        http: `https://cloudflare-eth.com`,
-      }),
-    }),
+
+
+import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
+
+import { WagmiProvider, http, createConfig } from 'wagmi'
+import { injected, coinbaseWallet, walletConnect } from 'wagmi/connectors'
+
+import { sepolia, mainnet } from 'wagmi/chains'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+
+const queryClient = new QueryClient()
+
+const projectId = '1f685aaf50ce8754dc96c376f5d5c736'
+
+
+const metadata = {
+  name: 'Pullix Staking',
+  description: 'Pullix Staking',
+  url: 'https://staking.pullix.io', // origin must match your domain & subdomain
+  icons: ['https://avatars.githubusercontent.com/u/37784886']
+}
+
+const config = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http("https://cloudflare-eth.com")
+  },
+  connectors: [
+    walletConnect({ projectId, metadata, showQrModal: false }),
+    injected({ shimDisconnect: true }),
+    coinbaseWallet({
+      appName: metadata.name,
+      appLogoUrl: metadata.icons[0]
+    })
   ]
-);
+})
 
-const { connectors } = getDefaultWallets({
-  appName: 'PLX Staking',
-  chains
-});
 
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider
+
+createWeb3Modal({
+  wagmiConfig: config,
+  projectId,
+  themeVariables: {
+    '--w3m-accent': 'linear-gradient(242.73deg, #3FC5EA -7.24%, #025E9F 90.52%)',
+    '--w3m-border-radius-master': '1px'
+  }
+
 })
 
 
@@ -58,8 +76,8 @@ const wagmiClient = createClient({
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(
-  <WagmiConfig client={wagmiClient}>
-    <RainbowKitProvider chains={chains}>
+  <WagmiProvider config={config}>
+    <QueryClientProvider client={queryClient}>
       <StrictMode>
         <ReduxProvider store={store}>
           <BrowserRouter>
@@ -69,9 +87,8 @@ root.render(
           </BrowserRouter>
         </ReduxProvider>
       </StrictMode>
-    </RainbowKitProvider>
-  </WagmiConfig>
-
+    </QueryClientProvider>  
+  </WagmiProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

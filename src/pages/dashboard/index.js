@@ -47,9 +47,14 @@ import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { USDT, ORBN } from "components/icons"
 import { GlobalContext } from 'context/GlobalContext';
 import { CONFIG } from 'configs/config';
-import { ethers } from 'ethers';
-import { useAccount, useSigner } from 'wagmi';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount, useSigner, useConfig } from 'wagmi';
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import {formatEther, parseUnits} from 'viem'
+import { writeContract, waitForTransactionReceipt  } from '@wagmi/core'
+
+
+
+
 import useAccountData from 'hooks/useAccountData';
 import useGetRewards from 'hooks/useGetRewards';
 import { Card } from '../../../node_modules/@mui/material/index';
@@ -191,10 +196,13 @@ const Token = styled(Paper)(({ theme }) => ({
 
 const DashboardDefault = () => {
     const [totalPurchaseAmount, setTotalPurchaseAmount] = useState(0) 
+    const [tokenPrice, setTokenPrice] = useState(0)
     const { address, isConnected } = useAccount()
-    const { data: signer } = useSigner()
-    const { openConnectModal } = useConnectModal()
-    const { blockchainData, updateLoading, fetchData } = useContext(GlobalContext)
+    const config = useConfig()
+    // const { data: signer } = useSigner()
+    const { open } = useWeb3Modal()
+    const { blockchainData, updateLoading, fetchData, getEthInUSD } = useContext(GlobalContext)
+    console.log('blockchainData', blockchainData)
     const txtAmount = useRef()
     const selPid = useRef()
 
@@ -202,11 +210,11 @@ const DashboardDefault = () => {
     const refetchRewards = useGetRewards()
     const refetchClaimData = useUserClaimData()
 
-    const totalLockedValue = (parseFloat(blockchainData.lockedTokens.orbn) * 0.1125 )
+    const totalLockedValue = (parseFloat(blockchainData.lockedTokens.orbn) * tokenPrice )
 
     const handleRewards = async () => {
         if (!isConnected) {
-            openConnectModal()
+            open()
             return
         }
         const _pid = selPid.current.value
@@ -217,49 +225,75 @@ const DashboardDefault = () => {
 
         try {
             updateLoading(true)
-            const contract = new ethers.Contract(CONFIG.STAKING_CONTRACT, StakeAbi, signer)
-            const estimate = await contract.estimateGas.getRewards(_pid)
-            const rewardsTx = await contract.getRewards(_pid, { gasLimit: estimate.toString() })
-            await rewardsTx.wait()
-            console.log(rewardsTx)
+            const tx = await writeContract(config, {
+                address: CONFIG.STAKING_CONTRACT,
+                abi: StakeAbi,
+                functionName: 'getRewards',
+                args: [_pid]
+            })
+            console.log(tx)
+            const result = await waitForTransactionReceipt(config, {
+                hash: tx
+            })
+            console.log(result)
+            
             updateLoading(false)
             fetchData()
             refetchAccountData()
             refetchRewards()
             AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
         } catch (e) {
+            console.log(e)
             updateLoading(false)
             AlertMsg({ title: 'Oops!', msg: 'Something went wrong', icon: 'error' })
         }
     }
 
     const approve = async (amount, tokenAddress) => {
-        const contract = new ethers.Contract(tokenAddress, TokenAbi, signer)
-        const estimate = await contract.estimateGas.increaseAllowance(CONFIG.STAKING_CONTRACT, amount)
-        const approveTx = await contract.increaseAllowance(CONFIG.STAKING_CONTRACT, amount, { gasLimit: estimate.toString() })
-        await approveTx.wait()
-        console.log(approveTx)
+        const tx = await writeContract(config, {
+            address: CONFIG.ORBN_ADDRESS,
+            abi: TokenAbi,
+            functionName: 'increaseAllowance',
+            args: [CONFIG.STAKING_CONTRACT ,amount]
+        })
+        console.log(tx)
+        const result = await waitForTransactionReceipt(config, {
+            hash: tx
+        })
+        console.log(result)
     }
 
     const deposit = async (pid, amount) => {
-        const contract = new ethers.Contract(CONFIG.STAKING_CONTRACT, StakeAbi, signer)
-        const estimate = await contract.estimateGas.deposit(pid, amount)
-        const stakeTx = await contract.deposit(pid, amount, { gasLimit: estimate.toString() })
-        await stakeTx.wait()
-        console.log(stakeTx)
+        const tx = await writeContract(config, {
+            address: CONFIG.STAKING_CONTRACT,
+            abi: StakeAbi,
+            functionName: 'deposit',
+            args: [pid ,amount]
+        })
+        console.log(tx)
+        const result = await waitForTransactionReceipt(config, {
+            hash: tx
+        })
+        console.log(result)
     }
 
     const withdraw = async (pid, amount) => {
-        const contract = new ethers.Contract(CONFIG.STAKING_CONTRACT, StakeAbi, signer)
-        const estimate = await contract.estimateGas.exit(pid, amount)
-        const stakeTx = await contract.exit(pid, amount, { gasLimit: estimate.toString() })
-        await stakeTx.wait()
-        console.log(stakeTx)
+        const tx = await writeContract(config, {
+            address: CONFIG.STAKING_CONTRACT,
+            abi: StakeAbi,
+            functionName: 'exit',
+            args: [pid ,amount]
+        })
+        console.log(tx)
+        const result = await waitForTransactionReceipt(config, {
+            hash: tx
+        })
+        console.log(result)
     }
 
     const handleStake = async () => {
         if (!isConnected) {
-            openConnectModal()
+            open()
             return
         }
         const _pid = selPid.current.value
@@ -272,10 +306,10 @@ const DashboardDefault = () => {
             AlertMsg({ title: 'Oops!', msg: 'Enter Valid Amount', icon: 'error' })
             return
         }
-        const decimal = parseInt(_pid) < 5 ? CONFIG.ORBN_DECIMALS : CONFIG.USDT_DECIMALS
-        const tokenAddress = parseInt(_pid) < 5 ? CONFIG.ORBN_ADDRESS : CONFIG.USDT_ADDRESS
+        const decimal = CONFIG.ORBN_DECIMALS
+        const tokenAddress = CONFIG.ORBN_ADDRESS
         try {
-            amount = ethers.utils.parseUnits(amount, decimal)
+            amount = parseUnits(amount, decimal)
         } catch (e) {
             AlertMsg({ title: 'Oops!', msg: 'Enter Valid Amount', icon: 'error' })
             return
@@ -292,6 +326,7 @@ const DashboardDefault = () => {
             AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
 
         } catch (e) {
+            console.log(e)
             updateLoading(false)
             AlertMsg({ title: 'Oops!', msg: 'Something went wrong', icon: 'error' })
         }
@@ -300,7 +335,7 @@ const DashboardDefault = () => {
 
     const handleWithdraw = async () => {
         if (!isConnected) {
-            openConnectModal()
+            open()
             return
         }
         const _pid = selPid.current.value
@@ -313,17 +348,22 @@ const DashboardDefault = () => {
             AlertMsg({ title: 'Oops!', msg: 'Enter Valid Amount', icon: 'error' })
             return
         }
-        const decimal = parseInt(_pid) < 5 ? CONFIG.ORBN_DECIMALS : CONFIG.USDT_DECIMALS
-        const tokenAddress = parseInt(_pid) < 5 ? CONFIG.ORBN_ADDRESS : CONFIG.USDT_ADDRESS
+        const decimal = CONFIG.ORBN_DECIMALS
+        const tokenAddress = CONFIG.ORBN_ADDRESS
         try {
-            amount = ethers.utils.parseUnits(amount, decimal)
+            amount = parseUnits(amount, decimal)
         } catch (e) {
+            console.log(e)
             AlertMsg({ title: 'Oops!', msg: 'Enter Valid Amount', icon: 'error' })
             return
         }
 
         try {
             updateLoading(true)
+            const timecheck = (parseInt(blockchainData.userStakes[_pid].timestamp.toString())+parseInt(blockchainData.pools[_pid].duration.toString())) - parseInt((new Date().getTime()) / 1000)
+            if(timecheck > 0) {
+                throw 'Period not Expired'
+            }
             await withdraw(_pid, amount)
             fetchData()
             refetchAccountData()
@@ -332,6 +372,7 @@ const DashboardDefault = () => {
             AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
 
         } catch (e) {
+            console.log(e)
             updateLoading(false)
             AlertMsg({ title: 'Oops!', msg: 'Something went wrong', icon: 'error' })
         }
@@ -350,15 +391,23 @@ const DashboardDefault = () => {
                 }
             }
             
-            const contract = new ethers.Contract(CONFIG.CLAIM_CONTRACT, claimAbi, signer)
-            const estimate = await contract.estimateGas.Claim(amount, proof)
-            const stakeTx = await contract.Claim(amount, proof, { gasLimit: estimate.toString() })
-            await stakeTx.wait()
-            console.log(stakeTx) 
+            const tx = await writeContract(config, {
+                address: CONFIG.CLAIM_CONTRACT,
+                abi: claimAbi,
+                functionName: 'Claim',
+                args: [amount ,proof]
+            })
+            console.log(tx)
+            const result = await waitForTransactionReceipt(config, {
+                hash: tx
+            })
+            console.log(result)
+
             updateLoading(false)
             refetchClaimData();
             AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
         } catch (e) {
+            console.log(e)
             updateLoading(false)
             AlertMsg({ title: 'Oops!', msg: 'Something went wrong', icon: 'error' })
         }
@@ -376,12 +425,18 @@ const DashboardDefault = () => {
                 amount = v[1]
                 }
             }
-            
-            const contract = new ethers.Contract(CONFIG.CLAIM_CONTRACT, claimAbi, signer)
-            const estimate = await contract.estimateGas.Stake(amount, proof)
-            const stakeTx = await contract.Stake(amount, proof, { gasLimit: estimate.toString() })
-            await stakeTx.wait()
-            console.log(stakeTx) 
+
+            const tx = await writeContract(config, {
+                address: CONFIG.CLAIM_CONTRACT,
+                abi: claimAbi,
+                functionName: 'Stake',
+                args: [amount ,proof]
+            })
+            console.log(tx)
+            const result = await waitForTransactionReceipt(config, {
+                hash: tx
+            })
+            console.log(result)            
             fetchData()
             refetchAccountData()
             refetchRewards()
@@ -389,10 +444,16 @@ const DashboardDefault = () => {
             updateLoading(false)
             AlertMsg({ title: 'Congratulation!', msg: 'Your transaction has been completed successfully', icon: 'success' })
         } catch (e) {
+            console.log(e)
             updateLoading(false)
             AlertMsg({ title: 'Oops!', msg: 'Something went wrong', icon: 'error' })
         }
     } 
+
+    const fetchRates = async () => {
+        const data = await getEthInUSD()
+        setTokenPrice(parseFloat(data.pullix.usd).toFixed(3))
+    }
 
     useEffect(() => {
         if(isConnected){
@@ -404,9 +465,13 @@ const DashboardDefault = () => {
                 }
             }
 
-            setTotalPurchaseAmount(ethers.utils.formatEther(totalTokens))
+            setTotalPurchaseAmount(formatEther(totalTokens))
         }
     }, [address, isConnected])
+
+    useEffect(()=>{
+        fetchRates()
+    }, [])
 
 
     return (
@@ -505,7 +570,7 @@ const DashboardDefault = () => {
                                             <div style={{ width: "1px", height: "10px", background: "#C7C8CC" }}></div>
                                             <Typography variant="p" color="#9D9D9D" sx={{ fontWeight: 700, fontSize: '10px'}} >Pullix</Typography>
                                         </Stack>
-                                        <Typography variant="p" color="#EF9933" sx={{ fontWeight: 700, fontSize: '14px' }} >$ 0.000125 USD</Typography>
+                                        <Typography variant="p" color="#EF9933" sx={{ fontWeight: 700, fontSize: '14px' }} >$ {tokenPrice} USD</Typography>
                                     </Stack>
                                 </Stack>
                             </Token>

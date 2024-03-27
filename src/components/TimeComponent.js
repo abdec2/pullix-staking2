@@ -5,8 +5,7 @@ import { Box, Stack, Typography, Divider, Paper } from "@mui/material"
 import { GlobalContext } from 'context/GlobalContext';
 import { useAccount } from 'wagmi';
 import Countdown from './Countdown';
-import { ethers, BigNumber } from 'ethers';
-import { CONFIG } from 'configs/config';
+import { formatUnits } from 'viem';
 import { LockIcon, LogoSmall } from './icons/index';
 import { Grid } from '../../node_modules/@mui/material/index';
 
@@ -29,10 +28,10 @@ const TimeComponent = () => {
     }
     
 
-    let stakeAmount = blockchainData.userStakes.length > 0 ? (blockchainData?.userStakes[opt]?.amount) : 0
+    let stakeAmount = blockchainData.userStakes.length > 0 ? (blockchainData?.userStakes[opt]?.amount.toString()) : 0
     stakeAmount = isNaN(stakeAmount) ? 0 : stakeAmount
 
-    let rewardsEarned = blockchainData.rewards.length > 0 ? (blockchainData?.rewards[opt]) : 0
+    let rewardsEarned = blockchainData.rewards.length > 0 ? (blockchainData?.rewards[opt].toString()) : 0
     rewardsEarned = isNaN(rewardsEarned) ? 0 : rewardsEarned
  
     const styles = {
@@ -134,12 +133,12 @@ const TimeComponent = () => {
                         >
                             <Typography variant="p"  sx={{...styles.lockAmount, color: '#9CA6B8'}}>Token Staked: &nbsp;  
                                 <Typography variant="p" color="#fff" sx={{fontWeight: 'bold'}}> 
-                                    {new Intl.NumberFormat("en-US").format(ethers.utils.formatUnits(stakeAmount.toString(),decimals)) + " "+symbol}
+                                    {new Intl.NumberFormat("en-US").format(formatUnits(stakeAmount.toString(),decimals)) + " "+symbol}
                                 </Typography>
                             </Typography>
                             <Typography variant="p" sx={{...styles.lockAmount, color: '#9CA6B8', display: 'flex'}}>Rewards Earned: &nbsp; 
                                 <Typography color="#fff" sx={{fontWeight: 'bold', fontSize: '11px'}}>
-                                    {parseFloat(ethers.utils.formatUnits(rewardsEarned.toString(), decimals)).toFixed(5)} PLX
+                                    {parseFloat(formatUnits(rewardsEarned.toString(), decimals)).toFixed(5)} PLX
                                 </Typography>
                             </Typography>
                         </Box>
