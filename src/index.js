@@ -44,9 +44,9 @@ const metadata = {
 }
 
 const config = createConfig({
-  chains: [sepolia],
+  chains: [mainnet],
   transports: {
-    [sepolia.id]: http()
+    [mainnet.id]: http("https://cloudflare-eth.com")
   },
   connectors: [
     walletConnect({ projectId, metadata, showQrModal: false }),
@@ -63,6 +63,11 @@ const config = createConfig({
 createWeb3Modal({
   wagmiConfig: config,
   projectId,
+  themeVariables: {
+    '--w3m-accent': 'linear-gradient(242.73deg, #3FC5EA -7.24%, #025E9F 90.52%)',
+    '--w3m-border-radius-master': '1px'
+  }
+
 })
 
 

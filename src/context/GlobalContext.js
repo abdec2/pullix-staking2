@@ -82,7 +82,7 @@ export const GlobalProvider = ({ children }) => {
 
     })
 
-    const {data: st_data, isPending: st_pending, isSuccess: st_success} = useReadContracts({
+    const {data: st_data, isPending: st_pending, isSuccess: st_success, refetch: st_refetch} = useReadContracts({
         contracts: [
             {
                 ...stakingContract,
@@ -181,14 +181,14 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const getEthInUSD = async (pair) => {
-        const req = await fetch(`https://api.coinbase.com/v2/prices/${pair}/spot`)
+        const req = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=pullix&vs_currencies=usd`)
         const res = await req.json()
-        return res.data
+        return res
     }
 
     const fetchData = async () => {
         refetch()
-        stakeHoldersCR.refetch()
+        st_refetch()
     }
 
     useEffect(() => {
@@ -201,7 +201,7 @@ export const GlobalProvider = ({ children }) => {
             const apyObj = {}
             const poolArray = []
             apy.map((item, i) => {
-                apyObj[i] = item.result[2].toString()
+                apyObj[i] = item.result.apy.toString()
                 poolArray.push(item.result)
             })
             UpdateApy(apyObj)
@@ -232,7 +232,8 @@ export const GlobalProvider = ({ children }) => {
                 updateClaimData,
                 fetchData,
                 UpdateOrbnPrice,
-                UpdateUSDTPrice
+                UpdateUSDTPrice,
+                getEthInUSD
             }
         }
         >

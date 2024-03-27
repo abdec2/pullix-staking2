@@ -36,19 +36,24 @@ const useUserClaimData = () => {
     })
 
     useEffect(() => {
-        if(isConnected && !isSuccess) {
+        if(isConnected) {
             refetch()
         } 
+        
+    }, [isConnected, address])
+
+    useEffect(() => {
+        
         if(isSuccess) {
             const claimData = {
-                userInitialized: data[0].result,
-                userBalance: formatEther(data[1].result),
-                tokensClaimed: formatEther(data[2].result)
+                userInitialized: data[0].status === 'failure' ? false : data[0].result,
+                userBalance: data[1].status === 'failure' ? 0 : formatEther(data[1].result),
+                tokensClaimed: data[2].status === 'failure' ? 0 : formatEther(data[2].result)
             }
 
             updateClaimData(claimData)
         }
-    }, [isConnected, address, isPending, isSuccess])
+    }, [isPending, isSuccess])
 
     return refetch
 }

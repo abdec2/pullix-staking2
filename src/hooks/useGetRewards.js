@@ -1,6 +1,6 @@
 import { GlobalContext } from "context/GlobalContext"
 import { useContext, useEffect } from "react"
-import { useContractReads, useAccount } from "wagmi"
+import { useReadContracts, useAccount } from "wagmi"
 import { CONFIG } from './../configs/config'
 import stakingAbi from './../configs/staking.json'
 
@@ -14,7 +14,7 @@ const useGetRewards = () => {
     const { address, isConnected } = useAccount()
     const { blockchainData, updateRewards } = useContext(GlobalContext)
 
-    const { data, isLoading, isError, refetch } = useContractReads({
+    const { data, isPending, isSuccess, refetch } = useReadContracts({
         contracts: [
             {
                 ...stakingContract,
@@ -32,17 +32,26 @@ const useGetRewards = () => {
                 args: [2, address]
             }
         ], 
-        enabled: false,
-        onSuccess(data) {
-            updateRewards(data)
-        }
     })
 
     useEffect(() => {
         if(isConnected) {
             refetch()
         } 
+        
     }, [isConnected, address])
+
+    useEffect(() => {
+        if(isSuccess) {
+            const array = []
+            data.map(item => {
+                if(item.status === "success") {
+                    array.push(item.result)
+                }
+            })
+            updateRewards(array)
+        }
+    }, [isPending, isSuccess])
 
     return refetch
 }

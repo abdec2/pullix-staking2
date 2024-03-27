@@ -36,13 +36,13 @@
 //               if (!connected) {
 //                 return (
 //                     <Button sx={{
-//                         padding: '10px 23px', 
-//                         fontSize: '14px',
-//                         boxSizing: 'border-box',
-//                         background: 'linear-gradient(242.73deg, #3FC5EA -7.24%, #025E9F 90.52%)',
-//                         color: '#fff',
-//                         fontWeight: 600,
-//                         borderRadius: '5px', 
+                        // padding: '10px 23px', 
+                        // fontSize: '14px',
+                        // boxSizing: 'border-box',
+                        // background: 'linear-gradient(242.73deg, #3FC5EA -7.24%, #025E9F 90.52%)',
+                        // color: '#fff',
+                        // fontWeight: 600,
+                        // borderRadius: '5px', 
 //                     }} onClick={openConnectModal} >Connect Wallet</Button>
                   
 //                 );
