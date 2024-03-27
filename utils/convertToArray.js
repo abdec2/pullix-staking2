@@ -1,5 +1,5 @@
 const fs = require('fs')
-const {ethers} = require('ethers')
+const {parseEther} = require('viem')
 const {parse} = require('csv-parse')
 
 const addressArray = []
@@ -7,7 +7,7 @@ const addressArray = []
 fs.createReadStream('./utils/aaa.csv')
     .pipe(parse({delimiter: ','}))
     .on("data", row => {
-        let parseRow = [row[0], ethers.utils.parseEther(row[1]).toString()]
+        let parseRow = [row[0], parseEther(row[1]).toString()]
         addressArray.push(parseRow)
     })
     .on("end", () => {
