@@ -194,7 +194,7 @@ export const GlobalProvider = ({ children }) => {
     useEffect(() => {
         if(isSuccess) {
             updateLockedTokens({
-                orbn: formatUnits(data[0].result.toString(), CONFIG.ORBN_DECIMALS),
+                orbn: formatUnits(data[0]?.result.toString(), CONFIG.ORBN_DECIMALS),
             })
         }
         if(isSuccess_apy) {
